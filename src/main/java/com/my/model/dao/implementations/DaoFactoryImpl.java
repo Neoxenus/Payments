@@ -8,21 +8,21 @@ public class DaoFactoryImpl extends DaoFactory {
 
     @Override
     public AccountDao createAccountDao() {
-        return null;
+        return new AccountDaoImpl();
     }
 
     @Override
     public UserDao createUserDao() {
-        return null;
+        return new UserDaoImpl();
     }
 
     @Override
     public CreditCardDao createCreditCardDao() {
-        return null;
+        return new CreditCardDaoImpl();
     }
 
     @Override
     public PaymentDao createPaymentDao() {
-        return null;
+        return new PaymentDaoImpl();
     }
 }

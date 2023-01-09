@@ -12,7 +12,7 @@ public class ConnectionPool {
     static {
         BasicDataSource basicDataSource = new BasicDataSource();
         basicDataSource.setDriverClassName("org.postgresql.Driver");
-        basicDataSource.setUrl("jdbc:postgresql://localhost:5432/postgres");
+        basicDataSource.setUrl("jdbc:postgresql://localhost:5432/Payments");
         basicDataSource.setUsername("postgres");
         basicDataSource.setPassword("1111");
         basicDataSource.setMinIdle(5);

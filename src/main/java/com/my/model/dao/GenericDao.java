@@ -5,10 +5,10 @@ import java.util.List;
 public interface GenericDao<T> extends AutoCloseable{
 
     void add(T entity);
-    T findById(Long id);
+    T findById(Integer id);
     List<T> findAll();
     void update(T entity);
-    void delete(Long id);
+    void delete(Integer id);
     void deleteEntity(T entity);
 
     void close();

@@ -1,5 +1,7 @@
 package com.my.model.dao;
 
+import com.my.model.dao.implementations.DaoFactoryImpl;
+
 public abstract class DaoFactory {
     private static volatile DaoFactory daoFactory;
 
@@ -7,7 +9,7 @@ public abstract class DaoFactory {
         if (daoFactory == null) {
             synchronized (DaoFactory.class){
                 if (daoFactory == null) {
-                    //daoFactory =  new DaoFactoryImpl();
+                    daoFactory =  new DaoFactoryImpl();
                 }
             }
         }

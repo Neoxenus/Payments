@@ -1,4 +1,9 @@
 package com.my.model.dao;
 
-public interface AccountDao extends GenericDao<AccountDao>{
+import com.my.model.entities.Account;
+
+import java.util.List;
+
+public interface AccountDao extends GenericDao<Account>{
+    List<Account> findByUserId(int userId);
 }

@@ -1,4 +1,6 @@
 package com.my.model.dao;
 
-public interface PaymentDao extends GenericDao<PaymentDao>{
+import com.my.model.entities.Payment;
+
+public interface PaymentDao extends GenericDao<Payment>{
 }
