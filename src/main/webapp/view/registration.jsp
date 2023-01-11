@@ -15,19 +15,19 @@
     <form method="post" action="<c:url value="/"/>"  class="form-group">
         <input name="command" type="hidden" value="register">
         <label for="username" class="form-label">Username</label>
-        <input type="text" name="username" class="form-control"
+        <input type="text" autocomplete="off" name="username" class="form-control"
                id="username">
         <br/>
         <label for="phone_number" class="form-label">Phone number</label>
-        <input type="text" name="phone_number" class="form-control"
+        <input type="tel" autocomplete="off" name="phone_number" class="form-control"
                id="phone_number">
         <br/>
         <label for="email" class="form-label">Email</label>
-        <input type="email" name="email" class="form-control"
+        <input type="email" autocomplete="off" name="email" class="form-control"
                id="email">
         <br/>
         <label for="password" >Password</label>
-        <input type="text" name="password" class="form-control"
+        <input type="text" autocomplete="off" name="password" class="form-control"
                id="password">
         <br/>
         <input type="submit" class="btn btn-info" value="Register">

@@ -21,13 +21,13 @@ public class BlockAccount implements Command {
         int accountId = Integer.parseInt(request.getParameter("accountId"));
         accountService.setBlocked(accountId, true);
 
-        User currentUser = (User) request.getSession().getAttribute("user");
-        if(currentUser == null){
-            Servlet.logger.error("User is null in command /GetAccounts/");
-            return "redirect:/home";
-        }
-        List<Account> accountList = accountService.findByUserId(currentUser.getId());
-        request.getSession().setAttribute("accountList", accountList);
-        return "redirect:/view/accounts.jsp";
+//        User currentUser = (User) request.getSession().getAttribute("user");
+//        if(currentUser == null){
+//            Servlet.logger.error("User is null in command /GetAccounts/");
+//            return "redirect:/home";
+//        }
+//        List<Account> accountList = accountService.findByUserId(currentUser.getId());
+//        request.getSession().setAttribute("accountList", accountList);
+        return "redirect:/?command=getAccounts";
     }
 }

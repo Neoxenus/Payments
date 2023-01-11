@@ -32,7 +32,7 @@ public class AccountDaoImpl implements AccountDao {
             statement.setString(1, entity.getNumber());
             statement.setString(2, entity.getAccountName());
             statement.setString(3, entity.getIBAN());
-            statement.setDate(4, new java.sql.Date(entity.getDateOfRegistration().getTime()));
+            statement.setTimestamp(4, Timestamp.valueOf(entity.getDateOfRegistration()));
             statement.setDouble(5, entity.getBalanceAmount());
             statement.setBoolean(6, entity.getIsBlocked());
             statement.setInt(7, entity.getUserId());
@@ -89,7 +89,7 @@ public class AccountDaoImpl implements AccountDao {
             statement.setString(1, entity.getNumber());
             statement.setString(2, entity.getAccountName());
             statement.setString(3, entity.getIBAN());
-            statement.setDate(4, new java.sql.Date(entity.getDateOfRegistration().getTime()));
+            statement.setTimestamp(4, Timestamp.valueOf(entity.getDateOfRegistration()));
             statement.setDouble(5, entity.getBalanceAmount());
             statement.setBoolean(6, entity.getIsBlocked());
             statement.setInt(7, entity.getUserId());

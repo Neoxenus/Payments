@@ -56,15 +56,15 @@
         <input name="accountId" type="hidden" value="${param.accountId}">
 
         <label for="number" class="form-label">Number</label>
-        <input type="text" name="number" class="form-control"
+        <input type="text" autocomplete="off" name="number" class="form-control"
                id="number">
         <br/>
         <label for="cvv" class="form-label">cvv</label>
-        <input type="text" name="cvv" class="form-control"
+        <input type="text" autocomplete="off" name="cvv" class="form-control"
                id="cvv">
         <br/>
         <label for="expire_date" class="form-label">Expire date</label>
-        <input type="text" name="expire_date" class="form-control"
+        <input type="text" autocomplete="off" name="expire_date" class="form-control"
                id="expire_date">
         <br/>
         <input type="submit" class="btn btn-info" value="Add Credit Card">

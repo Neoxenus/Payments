@@ -105,8 +105,11 @@
               <td rowspan="${rowspan}">${account.number}</td>
               <td rowspan="${rowspan}">${account.accountName}</td>
               <td rowspan="${rowspan}">${account.IBAN}</td>
-              <td rowspan="${rowspan}">${account.dateOfRegistration}</td>
-              <td rowspan="${rowspan}">${account.balanceAmount}</td>
+              <td rowspan="${rowspan}">
+                <fmt:parseDate value="${account.dateOfRegistration}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both"/>
+                <fmt:formatDate value="${parsedDateTime}" pattern="dd.MM.yyyy HH:mm"/>
+              </td>
+              <td rowspan="${rowspan}"><fmt:formatNumber type="number" maxFractionDigits="2" value="${account.balanceAmount}"/></td>
               <td rowspan="${rowspan}">
                 <c:choose>
                   <c:when test="${account.isBlocked}">YES</c:when>
@@ -119,9 +122,17 @@
                   <input name="accountId" type="hidden" value="${account.id}">
                   <button class="btn btn-sm btn-warning mt-3" type="submit">Block Account</button>
                 </form>
+                <form  class="form-inline mx-1" action="<c:url value="/view/replenishAccount.jsp"/>" method="post">
+                  <input name="command" type="hidden" value="replenishAccount">
+                  <input name="accountId" type="hidden" value="${account.id}">
+                  <input name="account" type="hidden" value="${account.number}">
+                  <button class="btn btn-sm btn-success mt-3"
+                          ${account.isBlocked eq true ? 'disabled="disabled"' : ''}
+                          type="submit">Replenish Account</button>
+                </form>
               </td>
 
-            <c:choose>
+              <c:choose>
               <c:when test="${sessionScope.creditCardMap.get(account.id).isEmpty()}">
                 <td colspan="3">
                   No credit cards for this account

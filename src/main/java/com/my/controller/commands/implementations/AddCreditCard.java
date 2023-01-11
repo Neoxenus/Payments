@@ -42,12 +42,6 @@ public class AddCreditCard implements Command {
         CreditCard creditCard = new CreditCard(number, cvv, expireDate, accountId);
         creditCardService.addCreditCard(creditCard);
 
-        User currentUser = (User) request.getSession().getAttribute("user");
-        if(currentUser == null){
-            Servlet.logger.error("User is null in command /AddCreditCard/");
-            return "redirect:/";
-        }
-
         return "redirect:/?command=getAccounts";
     }
 }

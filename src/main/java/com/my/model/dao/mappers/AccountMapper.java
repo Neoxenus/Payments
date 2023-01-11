@@ -14,7 +14,7 @@ public class AccountMapper implements Mapper<Account> {
                 .number(resultSet.getString(AccountFields.NUMBER))
                 .accountName(resultSet.getString(AccountFields.ACCOUNT_NAME))
                 .IBAN(resultSet.getString(AccountFields.IBAN))
-                .dateOfRegistration(resultSet.getDate(AccountFields.DATE_OF_REGISTRATION))
+                .dateOfRegistration(resultSet.getTimestamp(AccountFields.DATE_OF_REGISTRATION).toLocalDateTime())
                 .balanceAmount(resultSet.getDouble(AccountFields.BALANCE_AMOUNT))
                 .isBlocked(resultSet.getBoolean(AccountFields.IS_BLOCKED))
                 .userId(resultSet.getInt(AccountFields.USER_ID))

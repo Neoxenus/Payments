@@ -27,6 +27,7 @@ public class CommandContainer {
         commands.put("blockAccount", new BlockAccount(accountService));
         commands.put("addCreditCard", new AddCreditCard(accountService, creditCardService));
         commands.put("deleteCreditCard", new DeleteCreditCard(creditCardService));
+        commands.put("replenishAccount", new ReplenishAccount(accountService));
     }
     public static Command getCommand(String command) {
         return commands.get(command);

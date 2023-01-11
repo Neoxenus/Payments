@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Data
@@ -14,13 +17,13 @@ public class Account {
     private String number;
     private String accountName;
     private String IBAN;
-    private Date dateOfRegistration;
+    private LocalDateTime dateOfRegistration;
     private double balanceAmount;
 
     private Boolean isBlocked;
     private int userId;
 
-    public Account(String number, String accountName, String IBAN, Date dateOfRegistration, double balanceAmount, int userId) {
+    public Account(String number, String accountName, String IBAN, LocalDateTime dateOfRegistration, double balanceAmount, int userId) {
         this.number = number;
         this.accountName = accountName;
         this.IBAN = IBAN;
@@ -28,5 +31,8 @@ public class Account {
         this.balanceAmount = balanceAmount;
         this.isBlocked = false;
         this.userId = userId;
+    }
+    public void replenish(double amount){
+        balanceAmount += amount;
     }
 }
