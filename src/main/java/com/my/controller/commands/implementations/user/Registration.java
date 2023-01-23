@@ -1,4 +1,4 @@
-package com.my.controller.commands.implementations;
+package com.my.controller.commands.implementations.user;
 
 import com.my.controller.commands.Command;
 import com.my.model.services.UserService;
@@ -19,22 +19,15 @@ public class Registration implements Command {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        if (email == null || email.equals("")) {
-            request.getSession().setAttribute("error", "registrationEmail");
-            return "view/registration.jsp";
-        }
-        if (username == null || username.equals("")) {
-            request.getSession().setAttribute("error", "registrationLogin");
-            return "view/registration.jsp";
-        }
-        if (password == null || password.equals("")) {
-            request.getSession().setAttribute("error", "registrationPassword");
-            return "view/registration.jsp";
-        }
-        User user = new User(username, phoneNumber, email, password);
-        userService.addUser(user);
 
-        //mb login
-        return "redirect:/";
+        if(userService.addUser(username, phoneNumber, email, password)){
+            //mb login
+            return "redirect:/";
+        } else {
+            request.getSession().setAttribute("error", "userExists");
+            return "view/registration.jsp";
+        }
+
+
     }
 }

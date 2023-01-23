@@ -15,15 +15,21 @@
     <form method="post" action="<c:url value="/"/>"  class="form-group">
         <input name="command" type="hidden" value="login">
         <label for="email" class="form-label">Email</label>
-        <input type="email" name="email" class="form-control"
+        <input type="email" name="email" class="form-control" required
                id="email">
         <br/>
         <label for="password" >Password</label>
-        <input type="password" autocomplete="off" name="password" class="form-control"
+        <input type="password" autocomplete="off" name="password" class="form-control" required
                id="password">
         <br/>
         <input type="submit" class="btn btn-info" value="Log in">
     </form>
 </div>
+<c:if test="${sessionScope.error == 'badLogin'}">
+    <script>
+        alert("Invalid login or password input")
+    </script>
+    ${sessionScope.error = null}
+</c:if>
 </body>
 </html>

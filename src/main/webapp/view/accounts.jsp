@@ -17,51 +17,14 @@
 </head>
 <body>
 
-<header>
-  <nav class="navbar navbar-expand-md navbar-dark"
-       style="background-color: darkslategray; color:white">
-    <div class="">
-      <a href="<c:url value="/"/>" class="navbar-brand"> Payments </a>
+<jsp:include page="header.jsp"/>
 
-
-      <%--            <c:out value="${sessionScope.user.name}"/>--%>
-      <%--            <c:out value='<%= request.getSession().getAttribute("userName")%>'/>--%>
-    </div>
-    <c:choose>
-      <c:when test="${sessionScope.user == null}">
-        <div class="navbar-nav">
-
-          <a class="btn btn-primary mx-2" href="<c:url value="/view/login.jsp"/>">Login</a>
-
-          <a class="btn btn-primary mx-2" href="<c:url value="/view/registration.jsp"/>">Sign Up</a>
-        </div>
-      </c:when>
-      <c:otherwise>
-
-        <form class=" mr-auto form-inline mx-2" method="post">
-            <%--                <a class="btn btn-primary my-2" href="<c:url value="/view/accounts.jsp"/>">Accounts</a>--%>
-          <input name="command" type="hidden" value="getAccounts">
-            <%--                <input name="pageNum" type="hidden" value="1">--%>
-            <%--                <input name="sortType" type="hidden" value="default">--%>
-          <button class="btn btn-primary mt-3" type="submit">Accounts</button>
-        </form>
-
-        <div class="mx-2">Logged as ${sessionScope.user.name}</div>
-        <form  class="form-inline mx-2" action="home" method="get">
-          <input name="command" type="hidden" value="logOut">
-          <button class="btn btn-primary mt-3" type="submit">LogOut</button>
-        </form>
-      </c:otherwise>
-    </c:choose>
-
-  </nav>
-</header>
 <br>
 <div style="width: 80%; margin: auto">
   <h3 class="text-center">Account and credit cards</h3>
   <hr>
   <div class="container text-center">
-    <a href="/view/addAccount.jsp" class="btn btn-block btn-success">Add
+    <a href="<c:url value="/view/addAccount.jsp"/>" class="btn btn-block btn-success">Add
       Account</a>
   </div>
 
@@ -79,7 +42,31 @@
       <th>Date of registration</th>
       <th >Balance amount</th>
       <th>Blocked</th>
-      <th class="right-border"></th>
+      <th class="d-flex justify-content-center right-border">
+        <form action="<c:url value="/"/>" method="get">
+          <input name="command" type="hidden" value="getAccounts">
+          <label for="sortSelect">Sorting by:</label>
+          <select class="form-select" id="sortSelect" name="accountSortType" onchange="this.form.submit()">
+            <%--@elvariable id="accountSortTypes" type="java.util.List"--%>
+            <c:forEach var="type" items="${accountSortTypes}" varStatus="loop">
+              <c:choose>
+                <%--@elvariable id="accountSortType" type="java.lang.String"--%>
+                <c:when test="${accountSortType == type}">
+                  <option value="${type}" selected = "selected">
+                      ${type}
+                  </option>
+                </c:when>
+                <c:otherwise>
+                  <option value="${type}">
+                      ${type}
+                  </option>
+                </c:otherwise>
+              </c:choose>
+            </c:forEach>
+          </select>
+        </form>
+      </th>
+
 
       <th>Credit card number</th>
       <th>cvv</th>
@@ -95,40 +82,37 @@
           </tr>
         </c:when>
         <c:otherwise>
+          <%--@elvariable id="accountList" type="java.util.List"--%>
           <c:forEach var="account" items="${accountList}">
             <c:set var="rowspan" value="${sessionScope.creditCardMap.get(account.id).size()}"/>
             <c:if test="${rowspan == 0}">
               <c:set var="rowspan" value="1"/>
             </c:if>
 
-            <tr>
+            <tr${account.isBlocked eq 'ACTIVE' ? '' : 'class="disabled"'}>
               <td rowspan="${rowspan}">${account.number}</td>
               <td rowspan="${rowspan}">${account.accountName}</td>
               <td rowspan="${rowspan}">${account.IBAN}</td>
               <td rowspan="${rowspan}">
-                <fmt:parseDate value="${account.dateOfRegistration}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both"/>
-                <fmt:formatDate value="${parsedDateTime}" pattern="dd.MM.yyyy HH:mm"/>
+                <fmt:parseDate value="${account.dateOfRegistration}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedDateTime" type="both"/>
+                <fmt:formatDate value="${parsedDateTime}" pattern="dd.MM.yyyy HH:mm:ss"/>
               </td>
               <td rowspan="${rowspan}"><fmt:formatNumber type="number" maxFractionDigits="2" value="${account.balanceAmount}"/></td>
-              <td rowspan="${rowspan}">
-                <c:choose>
-                  <c:when test="${account.isBlocked}">YES</c:when>
-                  <c:otherwise>NO</c:otherwise>
-                </c:choose>
-              </td>
-              <td rowspan="${rowspan}" class="right-border">
-                <form  class="form-inline mx-1" method="get">
+              <td rowspan="${rowspan}">${account.isBlocked}</td>
+              <td rowspan="${rowspan}" class="d-flex justify-content-around right-border">
+                <form  class="form-inline mx-1" method="get" action="<c:url value="/"/>">
                   <input name="command" type="hidden" value="blockAccount">
                   <input name="accountId" type="hidden" value="${account.id}">
-                  <button class="btn btn-sm btn-warning mt-3" type="submit">Block Account</button>
+                  <button class="btn btn-sm btn-warning mt-3"
+                          type="submit">${account.isBlocked eq 'ACTIVE' ? 'Block' : 'Unblock'}</button>
                 </form>
                 <form  class="form-inline mx-1" action="<c:url value="/view/replenishAccount.jsp"/>" method="post">
                   <input name="command" type="hidden" value="replenishAccount">
                   <input name="accountId" type="hidden" value="${account.id}">
                   <input name="account" type="hidden" value="${account.number}">
                   <button class="btn btn-sm btn-success mt-3"
-                          ${account.isBlocked eq true ? 'disabled="disabled"' : ''}
-                          type="submit">Replenish Account</button>
+                          ${account.isBlocked eq 'ACTIVE' ? '' : 'disabled'}
+                          type="submit">Replenish</button>
                 </form>
               </td>
 
@@ -141,24 +125,32 @@
                   <form  class="form-inline mx-1" action="<c:url value="/view/addCreditCard.jsp"/>" method="post">
                     <input name="accountId" type="hidden" value="${account.id}">
 
-                    <button class="btn btn-sm btn-success mt-3" type="submit">Add Credit Card</button>
+                    <button class="btn btn-sm btn-success mt-3"
+                      ${account.isBlocked eq 'ACTIVE' ? '' : 'disabled'}
+                            type="submit">Add Credit Card</button>
                   </form>
                 </td>
               </c:when>
               <c:otherwise>
                 <c:set var="j" value="0"/>
+                <%--@elvariable id="creditCardMap" type="java.util.Map"--%>
                 <c:forEach var="creditCard" items="${creditCardMap.get(account.id)}">
                   <c:if test="${j>0}">
-                    <tr>
+                    <tr
+                    ${account.isBlocked eq 'ACTIVE' ? '' : 'class="disabled"'}
+                    >
                   </c:if>
                   <td>${creditCard.number}</td>
                   <td>${creditCard.cvv}</td>
                   <td>${creditCard.expireDate}</td>
                   <td>
-                    <form  class="form-inline mx-1" action="home" method="post">
+                    <form  class="form-inline mx-1" action="<c:url value="/"/>" method="post">
                       <input name="command" type="hidden" value="deleteCreditCard">
                       <input name="creditCardId" type="hidden" value="${creditCard.id}">
-                      <button class="btn btn-sm btn-warning mt-3" type="submit">Delete</button>
+                      <button class="btn btn-sm btn-warning mt-3"
+                        ${account.isBlocked eq 'ACTIVE' ? '' : 'disabled'}
+                              type="submit">Delete</button>
+
                     </form>
                   </td>
                   <c:if test="${j>0}">
@@ -170,11 +162,12 @@
               </c:otherwise>
             </c:choose>
             </tr>
-            <c:set var="i" value="${i+1}"/>
+<%--            <c:set var="i" value="${i+1}"/>--%>
 
         </c:forEach>
         </c:otherwise>
       </c:choose>
   </table>
 </div>
+
 </body>

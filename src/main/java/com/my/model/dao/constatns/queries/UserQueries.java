@@ -2,10 +2,16 @@ package com.my.model.dao.constatns.queries;
 
 
 public final class UserQueries {
+    public static final String FIND_ALL = "SELECT * FROM users";
+    public static final String UPDATE = "UPDATE users " +
+            "SET name=?, email=?, phone_number=?, role=?::role_type, password=?, is_blocked=?::block_type " +
+            "WHERE id=?";
+
     private UserQueries(){}
     public static final String INSERT =
-            "INSERT INTO users (name, email, phone_number, role,  password, is_blocked) VALUES(?, ?, ?, ?::role_type, ?, ?)";
-    public static final String FIND_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM users WHERE email = ? AND password = ?";
+            "INSERT INTO users (name, email, phone_number, role,  password, is_blocked) " +
+                    "VALUES(?, ?, ?, ?::role_type, ?, ?::block_type)";
+    public static final String FIND_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
     public static final String FIND_BY_ID = "SELECT * FROM users WHERE id = ?";
 
 }

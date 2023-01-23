@@ -1,4 +1,4 @@
-package com.my.controller.commands.implementations;
+package com.my.controller.commands.implementations.credit_card;
 
 import com.my.controller.Servlet;
 import com.my.controller.commands.Command;

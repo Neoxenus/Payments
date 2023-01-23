@@ -1,4 +1,4 @@
-package com.my.controller.commands.implementations;
+package com.my.controller.commands.implementations.user;
 
 import com.my.controller.commands.Command;
 

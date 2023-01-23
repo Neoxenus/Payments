@@ -16,12 +16,15 @@ import java.io.IOException;
 /**
  * todo
  * <p>
- * payments
+ * internationalization:
+ * 2 locales(en and ukr)
+ * 2 buttons or selector for changing
+ * <p>
+ * pagination
+ * validation+
+ * <p>
+ *     probably add selectors for admin account check
  *
- * <p></p>
- * sorting
- * paggination???
- * unblock account button
  */
 
 
@@ -64,6 +67,7 @@ public class Servlet extends HttpServlet {
         } else {
 
             Command command = CommandContainer.getCommand(commandName);
+            //page = command != null ? CommandContainer.doCommand(command, request) : "redirect:/";
             page = CommandContainer.doCommand(command, request);
 
             if (page.contains("redirect")) {

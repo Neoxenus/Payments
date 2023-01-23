@@ -1,5 +1,6 @@
 package com.my.model.entities;
 
+import com.my.model.entities.enums.Block;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class Account {
     private LocalDateTime dateOfRegistration;
     private double balanceAmount;
 
-    private Boolean isBlocked;
+    private Block isBlocked;
     private int userId;
 
     public Account(String number, String accountName, String IBAN, LocalDateTime dateOfRegistration, double balanceAmount, int userId) {
@@ -29,7 +30,7 @@ public class Account {
         this.IBAN = IBAN;
         this.dateOfRegistration = dateOfRegistration;
         this.balanceAmount = balanceAmount;
-        this.isBlocked = false;
+        this.isBlocked = Block.ACTIVE;
         this.userId = userId;
     }
     public void replenish(double amount){

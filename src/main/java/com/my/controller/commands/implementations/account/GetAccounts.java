@@ -1,20 +1,15 @@
-package com.my.controller.commands.implementations;
+package com.my.controller.commands.implementations.account;
 
 import com.my.controller.Servlet;
 import com.my.controller.commands.Command;
-import com.my.model.dao.AccountDao;
-import com.my.model.dao.CreditCardDao;
-import com.my.model.dao.DaoFactory;
 import com.my.model.entities.Account;
 import com.my.model.entities.CreditCard;
 import com.my.model.entities.User;
 import com.my.model.services.AccountService;
 import com.my.model.services.CreditCardService;
-import com.my.model.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GetAccounts implements Command {
     private AccountService accountService;
@@ -31,10 +26,24 @@ public class GetAccounts implements Command {
             Servlet.logger.error("User is null in command /GetAccounts/");
             return "redirect:/";
         }
+
+        String sortType = request.getParameter("accountSortType");
+        //String selectValue = request.getParameter("selectValue");
+        Servlet.logger.info("sortType = " + sortType);
+        if(sortType == null){
+            sortType = Objects.requireNonNullElse(
+                    (String)request.getSession().getAttribute("accountSortType"),
+                    "Number");
+        }
+
         List<Account> accountList = accountService.findByUserId(currentUser.getId());
         Map<Integer, List<CreditCard>> creditCardMap = creditCardService.findByUserId(currentUser.getId());
+        //accountList = accountService.getAccountsSortedByParameter(accountList, sortType);
+        accountService.sortAccountsByParameter(accountList, sortType);
 
-
+        request.getSession().setAttribute("accountSortType", sortType);
+        request.getSession().setAttribute("accountSortTypes",
+                Arrays.stream(new String[]{"Number", "Account Name", "Amount"}).toList());
         request.getSession().setAttribute("accountList", accountList);
         request.getSession().setAttribute("creditCardMap", creditCardMap);
         return "redirect:/view/accounts.jsp";

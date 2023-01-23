@@ -1,29 +1,30 @@
-package com.my.controller.commands.implementations;
+package com.my.controller.commands.implementations.credit_card;
 
 import com.my.controller.Servlet;
 import com.my.controller.commands.Command;
-import com.my.model.dao.DaoFactory;
 import com.my.model.entities.Account;
 import com.my.model.entities.CreditCard;
 import com.my.model.entities.User;
 import com.my.model.services.AccountService;
+import com.my.model.services.CreditCardService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class AddAccount implements Command {
+public class AddCreditCard implements Command {
     private AccountService accountService;
-    public AddAccount(AccountService accountService){
+    CreditCardService creditCardService;
+    public AddCreditCard(AccountService accountService, CreditCardService creditCardService){
         this.accountService = accountService;
+        this.creditCardService = creditCardService;
     }
     @Override
     public String execute(HttpServletRequest request) {
         String number = request.getParameter("number");
-        String accountName = request.getParameter("account_name");
-        String iban = request.getParameter("IBAN");
+        String cvv = request.getParameter("cvv");
+        String expireDate = request.getParameter("expire_date");
+        int accountId = Integer.parseInt(request.getParameter("accountId"));
         //Double balanceAmount = Double.valueOf(request.getParameter("balance_amount"));
 
 //        if (email == null || email.equals("")) {
@@ -38,15 +39,14 @@ public class AddAccount implements Command {
 //            request.getSession().setAttribute("error", "registrationPassword");
 //            return "view/registration.jsp";
 //        }
+        //CreditCard creditCard = new CreditCard(number, cvv, expireDate, accountId);
 
-        User currentUser = (User) request.getSession().getAttribute("user");
-        if(currentUser == null){
-            Servlet.logger.error("User is null in command /AddAccount/");
-            return "redirect:/";
+        if(creditCardService.addCreditCard(number, cvv, expireDate, accountId)){
+            return "redirect:/?command=getAccounts";
+        } else {
+            request.getSession().setAttribute("error", "creditCardExists");
+            return "view/addCreditCard.jsp";
         }
-        accountService.addAccount(number, accountName, iban,
-               currentUser.getId());
 
-        return "redirect:/?command=getAccounts";
     }
 }

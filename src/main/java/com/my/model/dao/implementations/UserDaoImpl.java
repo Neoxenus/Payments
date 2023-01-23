@@ -2,9 +2,11 @@ package com.my.model.dao.implementations;
 
 import com.my.model.dao.ConnectionPool;
 import com.my.model.dao.UserDao;
+import com.my.model.dao.constatns.queries.AccountQueries;
 import com.my.model.dao.constatns.queries.UserQueries;
 import com.my.model.dao.exceptions.DBException;
 import com.my.model.dao.mappers.UserMapper;
+import com.my.model.entities.Account;
 import com.my.model.entities.User;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -13,6 +15,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl implements UserDao {
@@ -36,7 +39,7 @@ public class UserDaoImpl implements UserDao {
             statement.setString(3, entity.getPhoneNumber());
             statement.setString(4, entity.getRole().name());
             statement.setString(5, entity.getPassword());
-            statement.setBoolean(6, entity.isBlocked());
+            statement.setString(6, entity.getIsBlocked().name());
             statement.executeUpdate();
             logger.info("The user has been successfully inserted to the db");
         }catch (SQLException e){
@@ -63,12 +66,41 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> findAll() {
-        return null;
+        List<User> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(UserQueries.FIND_ALL)) {
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.add(userMapper.extractFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            logger.error("Failed to find users" + e);
+            throw new DBException("Failed to find users", e);
+        }
+        return result;
     }
 
     @Override
     public void update(User entity) {
-
+        if (entity == null){
+            return;
+        }
+        try{
+            PreparedStatement statement = connection.prepareStatement(UserQueries.UPDATE);
+            statement.setString(1, entity.getName());
+            statement.setString(2, entity.getEmail());
+            statement.setString(3, entity.getPhoneNumber());
+            statement.setString(4, entity.getRole().name());
+            statement.setString(5, entity.getPassword());
+            statement.setString(6, entity.getIsBlocked().name());
+            statement.setInt(7, entity.getId());
+            statement.executeUpdate();
+            logger.info("The user has been successfully updated");
+        }catch (SQLException e){
+            logger.error("An error occurred while updating a user", e);
+            throw new DBException("An error occurred while updating a user", e);
+        }
     }
 
     @Override
@@ -106,22 +138,21 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findByEmailAndPassword(String email, String password) {
-        try (PreparedStatement ps = connection.prepareStatement(UserQueries.FIND_USER_BY_EMAIL_AND_PASSWORD)) {
+    public User findByEmail(String email) {
+        try (PreparedStatement ps = connection.prepareStatement(UserQueries.FIND_USER_BY_EMAIL)) {
             ps.setString(1, email);
-            ps.setString(2, password);
 
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                logger.info("Found a user with the following email and password");
+                logger.info("Found a user with the following email");
                 return userMapper.extractFromResultSet(rs);
             }
         } catch (SQLException e) {
             logger.error("Cannot find user." + e);
             throw new DBException("Cannot find user", e);
         }
-        logger.info("No user with such email and password");
+        logger.info("No user with such email");
         return null;
     }
 }

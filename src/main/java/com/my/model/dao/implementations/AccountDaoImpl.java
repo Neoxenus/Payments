@@ -34,7 +34,7 @@ public class AccountDaoImpl implements AccountDao {
             statement.setString(3, entity.getIBAN());
             statement.setTimestamp(4, Timestamp.valueOf(entity.getDateOfRegistration()));
             statement.setDouble(5, entity.getBalanceAmount());
-            statement.setBoolean(6, entity.getIsBlocked());
+            statement.setString(6, entity.getIsBlocked().name());
             statement.setInt(7, entity.getUserId());
             statement.executeUpdate();
             logger.info("Successfully added account to db with number " + entity.getNumber() + " and user id " + entity.getUserId());
@@ -60,6 +60,23 @@ public class AccountDaoImpl implements AccountDao {
         }
         return result;
     }
+
+    @Override
+    public Account findByNumber(String number) {
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(AccountQueries.FIND_BY_NUMBER);
+            preparedStatement.setString(1, number);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                return accountMapper.extractFromResultSet(resultSet);
+            }
+            return null;
+        }catch (SQLException e){
+            logger.error("An error occurred while getting an account from the db", e);
+            throw new DBException("An error occurred while getting an account from the db",e);
+        }
+    }
+
     @Override
     public Account findById(Integer id) {
         try{
@@ -78,7 +95,19 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public List<Account> findAll() {
-        return null;
+        List<Account> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(AccountQueries.FIND_ALL)) {
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.add(accountMapper.extractFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            logger.error("Failed to find accounts" + e);
+            throw new DBException("Failed to find accounts", e);
+        }
+        return result;
     }
 
     @Override
@@ -91,7 +120,7 @@ public class AccountDaoImpl implements AccountDao {
             statement.setString(3, entity.getIBAN());
             statement.setTimestamp(4, Timestamp.valueOf(entity.getDateOfRegistration()));
             statement.setDouble(5, entity.getBalanceAmount());
-            statement.setBoolean(6, entity.getIsBlocked());
+            statement.setString(6, entity.getIsBlocked().name());
             statement.setInt(7, entity.getUserId());
             statement.setInt(8, entity.getId());
             statement.executeUpdate();

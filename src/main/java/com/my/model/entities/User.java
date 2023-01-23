@@ -1,5 +1,6 @@
 package com.my.model.entities;
 
+import com.my.model.entities.enums.Block;
 import com.my.model.entities.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,7 @@ public class User {
     private Role role;
 
     private String password;
-    private boolean isBlocked;
+    private Block isBlocked;
 
     public User(String name, String phoneNumber, String email, String password) {
         this.name = name;
@@ -24,6 +25,6 @@ public class User {
         this.role = Role.USER;
         this.email = email;
         this.password = password;
-        this.isBlocked = false;
+        this.isBlocked = Block.ACTIVE;
     }
 }

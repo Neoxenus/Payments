@@ -2,6 +2,7 @@ package com.my.model.dao.mappers;
 
 import com.my.model.dao.constatns.fields.AccountFields;
 import com.my.model.entities.Account;
+import com.my.model.entities.enums.Block;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ public class AccountMapper implements Mapper<Account> {
                 .IBAN(resultSet.getString(AccountFields.IBAN))
                 .dateOfRegistration(resultSet.getTimestamp(AccountFields.DATE_OF_REGISTRATION).toLocalDateTime())
                 .balanceAmount(resultSet.getDouble(AccountFields.BALANCE_AMOUNT))
-                .isBlocked(resultSet.getBoolean(AccountFields.IS_BLOCKED))
+                .isBlocked(Block.valueOf(resultSet.getString(AccountFields.IS_BLOCKED)))
                 .userId(resultSet.getInt(AccountFields.USER_ID))
                 .build();
     }

@@ -7,5 +7,5 @@ import java.util.Map;
 
 public interface CreditCardDao extends GenericDao<CreditCard> {
     List<CreditCard> findByAccountId(int accountId);
-
+    CreditCard findByNumber(String number);
 }

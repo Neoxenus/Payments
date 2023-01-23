@@ -15,8 +15,14 @@ public class CreditCardService {
     private final CreditCardDao creditCardDao = DaoFactory.getInstance().createCreditCardDao();
     private final AccountDao accountDao = DaoFactory.getInstance().createAccountDao();
 
-    public void addCreditCard(CreditCard creditCard){
-        creditCardDao.add(creditCard);
+    public boolean addCreditCard(String number, String cvv, String expireDate, int accountId){
+        CreditCard creditCard = new CreditCard(number, cvv, expireDate, accountId);
+        CreditCard dbCreditCard = creditCardDao.findByNumber(number);
+        if(dbCreditCard == null){
+            creditCardDao.add(creditCard);
+            return true;
+        }
+        return false;
     }
     public Map<Integer, List<CreditCard>> findByUserId(int userId){
         List<Account> accounts = accountDao.findByUserId(userId);

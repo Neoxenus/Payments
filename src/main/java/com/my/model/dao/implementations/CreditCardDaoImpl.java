@@ -2,6 +2,7 @@ package com.my.model.dao.implementations;
 
 import com.my.model.dao.ConnectionPool;
 import com.my.model.dao.CreditCardDao;
+import com.my.model.dao.constatns.queries.AccountQueries;
 import com.my.model.dao.constatns.queries.CreditCardQueries;
 import com.my.model.dao.exceptions.DBException;
 import com.my.model.dao.mappers.CreditCardMapper;
@@ -54,6 +55,22 @@ public class CreditCardDaoImpl implements CreditCardDao {
             throw new DBException("Failed to find credit cards", e);
         }
         return result;
+    }
+
+    @Override
+    public CreditCard findByNumber(String number) {
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(CreditCardQueries.FIND_BY_NUMBER);
+            preparedStatement.setString(1, number);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                return creditCardMapper.extractFromResultSet(resultSet);
+            }
+            return null;
+        }catch (SQLException e){
+            logger.error("An error occurred while getting an credit card from the db", e);
+            throw new DBException("An error occurred while getting an credit card from the db",e);
+        }
     }
 
     @Override

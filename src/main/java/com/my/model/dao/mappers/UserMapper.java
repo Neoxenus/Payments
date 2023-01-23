@@ -2,6 +2,7 @@ package com.my.model.dao.mappers;
 
 import com.my.model.dao.constatns.fields.UserFields;
 import com.my.model.entities.User;
+import com.my.model.entities.enums.Block;
 import com.my.model.entities.enums.Role;
 
 import java.sql.ResultSet;
@@ -17,7 +18,7 @@ public class UserMapper implements Mapper<User> {
                 .phoneNumber(resultSet.getString(UserFields.PHONE_NUMBER))
                 .role(Role.valueOf(resultSet.getString(UserFields.ROLE)))
                 .password(resultSet.getString(UserFields.PASSWORD))
-                .isBlocked(resultSet.getBoolean(UserFields.IS_BLOCKED))
+                .isBlocked(Block.valueOf(resultSet.getString(UserFields.IS_BLOCKED)))
                 .build();
     }
 }
