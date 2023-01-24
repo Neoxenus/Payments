@@ -21,4 +21,5 @@
 <body>
 
 <jsp:include page="header.jsp"/>
-Language <fmt:message key='home.demo'/>
+<%--Language <fmt:message key='home.demo'/>--%>
+<%--<fmt:message key='header.home'/>--%>

@@ -17,13 +17,14 @@ import java.io.IOException;
  * todo
  * <p>
  * internationalization:
- * 2 locales(en and ukr)
- * 2 buttons or selector for changing
+ * add to some enums of block status and roles, also for selectors to sorting
  * <p>
  * pagination
- * validation+
+ * for users
  * <p>
- *     probably add selectors for admin account check
+ * tests
+ * documentation
+ * probably add selectors for admin account check
  *
  */
 

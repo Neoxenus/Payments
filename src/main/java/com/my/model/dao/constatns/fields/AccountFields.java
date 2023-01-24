@@ -12,5 +12,6 @@ public final class AccountFields {
     public static final String IS_BLOCKED = "is_blocked";
 
     public static final String USER_ID = "user_id";
+    private static final String regex = "([\\d]{4}-((0?[1-9])|(1[0-2])))";
 
 }

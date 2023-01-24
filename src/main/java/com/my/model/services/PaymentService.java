@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 public class PaymentService {
     private static final int PAGINATION_SIZE = 5;
     public static final Logger logger = LogManager.getLogger(PaymentService.class);
+    public static final String[] PAYMENT_SORT_TYPES = new String[]{"number", "oldToNew", "newToOld"};
 
     private final PaymentDao paymentDao = DaoFactory.getInstance().createPaymentDao();
     private final AccountDao accountDao = DaoFactory.getInstance().createAccountDao();
@@ -78,8 +79,8 @@ public class PaymentService {
     }
     private void sortPaymentsByParameter(List<Payment> accountList, String sortType){
         switch (sortType){
-            case "Old to new" -> accountList.sort(Comparator.comparing(Payment::getTime));
-            case "New to old" -> accountList.sort(Comparator.comparing(Payment::getTime).reversed());
+            case "oldToNew" -> accountList.sort(Comparator.comparing(Payment::getTime));
+            case "newToOld" -> accountList.sort(Comparator.comparing(Payment::getTime).reversed());
             default -> accountList.sort(Comparator.comparing(Payment::getId));//by number
         }
         //return accountList;

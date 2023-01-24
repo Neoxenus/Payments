@@ -2,6 +2,14 @@
          pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:if test="${empty language}">
+  <c:set var="language" scope="session" value="${pageContext.request.locale.language}"/>
+</c:if>
+<c:if test="${!empty language}">
+  <fmt:setLocale value="${language}" scope="session"/>
+</c:if>
+
+<fmt:setBundle basename="Localization"/>
 <html>
 <head>
   <title>Payments</title>
@@ -18,7 +26,7 @@
 
 <br>
 <div style="width: 80%; margin: auto">
-  <h3 class="text-center">My Payments</h3>
+  <h3 class="text-center"><fmt:message key="payment.myPayments"/></h3>
   <hr>
   <div class="container text-center">
     <form class=" mr-auto form-inline mx-2" method="post" action="<c:url value="/"/>">
@@ -26,40 +34,34 @@
       <input name="command" type="hidden" value="prepareMakePayment">
       <%--                <input name="pageNum" type="hidden" value="1">--%>
       <%--                <input name="sortType" type="hidden" value="default">--%>
-      <button class="btn btn-block btn-success" type="submit">Make Payment</button>
+      <button class="btn btn-block btn-success" type="submit"><fmt:message key="payment.makePayment"/></button>
     </form>
   </div>
 
   <br>
   <table class="table table-bordered align-middle">
     <tr>
-      <th>Number</th>
-      <th>Time</th>
-      <th>Amount</th>
-      <th>Sender account</th>
-      <th>Receiver account</th>
-      <th>Assignment</th>
-      <th>Status</th>
+      <th><fmt:message key="payment.number"/></th>
+      <th><fmt:message key="payment.time"/></th>
+      <th><fmt:message key="payment.amount"/></th>
+      <th><fmt:message key="payment.senderAccount"/></th>
+      <th><fmt:message key="payment.receiverAccount"/></th>
+      <th><fmt:message key="payment.assignment"/></th>
+      <th><fmt:message key="payment.status"/></th>
       <th class="d-flex justify-content-center right-border">
       <form action="<c:url value="/"/>" method="get">
         <input name="command" type="hidden" value="getPayments">
-        <label for="sortSelect">Sorting by:</label>
+        <label for="sortSelect"><fmt:message key="payment.sortingBy"/>:</label>
         <select class="form-select" id="sortSelect" name="paymentSortType" onchange="this.form.submit()">
           <%--@elvariable id="paymentSortTypes" type="java.util.List"--%>
           <c:forEach var="type" items="${paymentSortTypes}" varStatus="loop">
-            <c:choose>
-              <%--@elvariable id="paymentSortType" type="java.lang.String"--%>
-              <c:when test="${paymentSortType == type}">
-                <option value="${type}" selected = "selected">
-                    ${type}
-                </option>
-              </c:when>
-              <c:otherwise>
-                <option value="${type}">
-                    ${type}
-                </option>
-              </c:otherwise>
-            </c:choose>
+            <%--@elvariable id="paymentSortType" type="java.lang.String"--%>
+<%--            ${paymentSortType eq type ? 'disabled' : ''}--%>
+<%--            type="submit"><fmt:message key="payment.cancel"/>--%>
+            <option value="${type}"${paymentSortType eq type ? 'selected' : ''}>
+              <fmt:message key="payment.sort.${type}"/>
+<%--                ${type}--%>
+            </option>
           </c:forEach>
         </select>
       </form>
@@ -70,7 +72,9 @@
     <c:choose>
       <c:when test="${sessionScope.paymentList.isEmpty()}">
         <tr>
-          <td colspan="9" class="right-border">You don't have payments yet</td>
+          <td colspan="9" class="right-border">
+            <fmt:message key="payment.noPaymentsMessage"/>
+          </td>
         </tr>
       </c:when>
       <c:otherwise>
@@ -94,7 +98,7 @@
                 <input name="paymentId" type="hidden" value="${payment.id}">
                 <button class="btn btn-warning mt-3"
                   ${payment.status.name() eq "SENT" ? 'disabled' : ''}
-                        type="submit">Cancel</button>
+                        type="submit"><fmt:message key="payment.cancel"/></button>
               </form>
               <form  class="form-inline" action="<c:url value="/"/>"
                      method="post">
@@ -102,7 +106,7 @@
                 <input name="paymentId" type="hidden" value="${payment.id}">
                 <button class="btn btn-success mt-3"
                   ${payment.status.name() eq "SENT" ? 'disabled' : ''}
-                        type="submit">Send</button>
+                        type="submit"><fmt:message key="payment.send"/></button>
               </form>
             </td>
           </tr>

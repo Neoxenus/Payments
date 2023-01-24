@@ -2,6 +2,14 @@
          pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:if test="${empty language}">
+    <c:set var="language" scope="session" value="${pageContext.request.locale.language}"/>
+</c:if>
+<c:if test="${!empty language}">
+    <fmt:setLocale value="${language}" scope="session"/>
+</c:if>
+
+<fmt:setBundle basename="Localization"/>
 <html>
 <head>
     <title>Payments</title>
@@ -55,12 +63,12 @@
     <hr>
     <table class="table table-bordered align-middle">
         <tr>
-            <th>Account number</th>
-            <th>Account name</th>
-            <th>IBAN</th>
-            <th>Date of registration</th>
-            <th>Balance amount</th>
-            <th>Blocked</th>
+            <th><fmt:message key='account.table.accountNumber'/></th>
+            <th><fmt:message key='account.table.accountName'/></th>
+            <th><fmt:message key='account.table.iban'/></th>
+            <th><fmt:message key='account.table.dateOfRegistration'/></th>
+            <th><fmt:message key='account.table.balanceAmount'/></th>
+            <th><fmt:message key='account.table.blockedStatus'/></th>
             <th></th>
 
         </tr>
@@ -80,8 +88,20 @@
                     <form  class="form-inline mx-1" method="get" action="<c:url value="/"/>">
                         <input name="command" type="hidden" value="blockAccountAdmin">
                         <input name="accountId" type="hidden" value="${account.id}">
-                        <button class="btn btn-sm btn-warning mt-3"
-                                type="submit">${account.isBlocked eq 'ACTIVE' ? 'Block' : 'Unblock'}</button>
+                        <c:choose>
+                            <c:when test="${account.isBlocked eq 'ACTIVE'}">
+                                <button class="btn btn-sm btn-warning mt-3"
+                                        type="submit">
+                                    <fmt:message key='account.table.block'/>
+                                </button>
+                            </c:when>
+                            <c:otherwise>
+                                <button class="btn btn-sm btn-warning mt-3"
+                                        type="submit">
+                                    <fmt:message key='account.table.unblock'/>
+                                </button>
+                            </c:otherwise>
+                        </c:choose>
                     </form>
                 </td>
             </tr>

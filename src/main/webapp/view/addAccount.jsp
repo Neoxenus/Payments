@@ -2,6 +2,14 @@
          pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:if test="${empty language}">
+    <c:set var="language" scope="session" value="${pageContext.request.locale.language}"/>
+</c:if>
+<c:if test="${!empty language}">
+    <fmt:setLocale value="${language}" scope="session"/>
+</c:if>
+
+<fmt:setBundle basename="Localization"/>
 <html>
 <head>
     <title>Payments</title>
@@ -19,19 +27,19 @@
 
         <input name="command" type="hidden" value="addAccount">
 
-        <label for="number" class="form-label">Number</label>
+        <label for="number" class="form-label"><fmt:message key='account.table.accountNumber'/></label>
         <input type="text" name="number" class="form-control" required
                id="number">
         <br/>
-        <label for="account_name" class="form-label">Account name</label>
+        <label for="account_name" class="form-label"><fmt:message key='account.table.accountName'/></label>
         <input type="text" name="account_name" class="form-control" required
                id="account_name">
         <br/>
-        <label for="IBAN" class="form-label">IBAN</label>
+        <label for="IBAN" class="form-label"><fmt:message key='account.table.iban'/></label>
         <input type="text" name="IBAN" class="form-control" required
                id="IBAN">
         <br/>
-        <input type="submit" class="btn btn-info" value="Add account">
+        <input type="submit" class="btn btn-info" placeholder="<fmt:message key='accounts.addAccount'/>">
     </form>
 </div>
 <c:if test="${sessionScope.error == 'accountExists'}">

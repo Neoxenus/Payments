@@ -2,6 +2,14 @@
          pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:if test="${empty language}">
+  <c:set var="language" scope="session" value="${pageContext.request.locale.language}"/>
+</c:if>
+<c:if test="${!empty language}">
+  <fmt:setLocale value="${language}" scope="session"/>
+</c:if>
+
+<fmt:setBundle basename="Localization"/>
 <html>
 <head>
   <title>Payments</title>
@@ -21,11 +29,11 @@
     <input name="command" type="hidden" value="replenishAccount">
     <input name="accountId" type="hidden" value="${param.accountId}">
 
-    <label for="amount" class="form-label">Amount in format: xxx.xx)</label>
+    <label for="amount" class="form-label"><fmt:message key='account.amountInFormat'/> </label>
     <input type="text" pattern="([\d]+([.][\d]{2})?)" name="amount" class="form-control"
            id="amount">
     <br/>
-    <input type="submit" class="btn btn-info" value="Replenish account">
+    <input type="submit" class="btn btn-info" placeholder="<fmt:message key='account.table.replenish'/>">
   </form>
 </div>
 </body>

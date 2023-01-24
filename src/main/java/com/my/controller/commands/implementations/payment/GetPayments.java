@@ -13,6 +13,8 @@ import com.my.model.services.PaymentService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
+import static com.my.model.services.PaymentService.PAYMENT_SORT_TYPES;
+
 public class GetPayments implements Command {
     private AccountService accountService;
     private CreditCardService creditCardService;
@@ -37,7 +39,7 @@ public class GetPayments implements Command {
         if(sortType == null){
             sortType = Objects.requireNonNullElse(
                     (String)request.getSession().getAttribute("paymentSortType"),
-                    "Number");
+                    PAYMENT_SORT_TYPES[0]);
         }
         Integer pageNumber = Integer.valueOf(Optional.ofNullable(request.getParameter("pageNumber")).orElse("1"));
         String pageCommand = Optional.ofNullable(request.getParameter("pageCommand")).orElse("");
@@ -56,7 +58,7 @@ public class GetPayments implements Command {
 
         request.getSession().setAttribute("paymentSortType", sortType);
         request.getSession().setAttribute("paymentSortTypes",
-                Arrays.stream(new String[]{"Number", "Old to new", "New to old"}).toList());
+                Arrays.stream(PAYMENT_SORT_TYPES).toList());
 
         //Map<Integer, List<CreditCard>> creditCardMap = creditCardService.findByUserId(currentUser.getId());
 

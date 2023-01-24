@@ -14,70 +14,70 @@
   <nav class="navbar navbar-expand-md navbar-dark"
        style="background-color: darkslategray; color:white">
     <div class="">
-      <a href="<c:url value="/"/>" class="navbar-brand"> Payments </a>
-
-
-      <%--            <c:out value="${sessionScope.user.name}"/>--%>
-      <%--            <c:out value='<%= request.getSession().getAttribute("userName")%>'/>--%>
+      <a href="<c:url value="/"/>" class="navbar-brand"> <fmt:message key='header.home'/> </a>
     </div>
     <c:choose>
       <c:when test="${sessionScope.user == null}">
-        <div class="navbar-nav ml-auto">
-
-          <a class="btn btn-primary mx-2" href="<c:url value="/view/login.jsp"/>">Log In</a>
-
-          <a class="btn btn-primary mx-2" href="<c:url value="/view/registration.jsp"/>">Sign Up</a>
-        </div>
       </c:when>
       <c:otherwise>
         <c:if test="${sessionScope.user.isBlocked == 'ACTIVE'}">
           <form class="form-inline mx-2" action="<c:url value="/"/>" method="get">
-              <%--                <a class="btn btn-primary my-2" href="<c:url value="/view/accounts.jsp"/>">Accounts</a>--%>
             <input name="command" type="hidden" value="getAccounts">
             <input name="sortType" type="hidden" value="byNumber">
-
-              <%--                <input name="pageNum" type="hidden" value="1">--%>
-              <%--                <input name="sortType" type="hidden" value="default">--%>
-            <button class="btn btn-primary mt-3" type="submit">My Accounts</button>
+            <button class="btn btn-primary mt-3" type="submit">
+              <fmt:message key='header.myAccounts'/>
+            </button>
           </form>
           <form class="form-inline mx-2" action="<c:url value="/"/>" method="get">
-              <%--                <a class="btn btn-primary my-2" href="<c:url value="/view/accounts.jsp"/>">Accounts</a>--%>
             <input name="command" type="hidden" value="getPayments">
-              <%--                <input name="pageNum" type="hidden" value="1">--%>
-              <%--                <input name="sortType" type="hidden" value="default">--%>
-            <button class="btn btn-primary mt-3" type="submit">My Payments</button>
+            <button class="btn btn-primary mt-3" type="submit">
+              <fmt:message key='header.myPayments'/>
+            </button>
           </form>
           <c:if test="${sessionScope.user.role == 'ADMIN'}">
             <div class="mx-auto">
               <form class="form-inline mx-2" action="<c:url value="/"/>" method="get">
-                  <%--                <a class="btn btn-primary my-2" href="<c:url value="/view/accounts.jsp"/>">Accounts</a>--%>
                 <input name="command" type="hidden" value="getUsersAdmin">
-                  <%--                <input name="pageNum" type="hidden" value="1">--%>
-                  <%--                <input name="sortType" type="hidden" value="default">--%>
-                <button class="btn btn-primary mt-3" type="submit">Users</button>
+                <button class="btn btn-primary mt-3" type="submit">
+                  <fmt:message key='header.adminUsers'/>
+                </button>
               </form>
             </div>
-
           </c:if>
         </c:if>
-        <form class="ml-auto form-inline mx-2 mt-3" action="<c:url value="/"/>" method="get">
-          <input name="command" type="hidden" value="changeLanguage">
-          <select class="form-select" id="languageSelect" name="language" onchange="this.form.submit()">
-            <option value="en"
-              ${"en" eq language ? 'selected' : ''}
-            >En</option>
-            <option value="ukr"
-              ${"ukr" eq language ? 'selected' : ''}
-            >Ukr</option>
-          </select>
-        </form>
-        <div class="mx-2">Logged as: <b><i>${sessionScope.user.name}</i></b></div>
+      </c:otherwise>
+    </c:choose>
+    <form class="ml-auto form-inline mx-2 mt-3" action="<c:url value="/"/>" method="get">
+      <input name="command" type="hidden" value="changeLanguage">
+      <select class="form-select" id="language" name="language" onchange="this.form.submit()">
+        <option value="en"
+        ${"en" eq language ? 'selected' : ''}
+        >English</option>
+        <option value="ukr"
+        ${"ukr" eq language ? 'selected' : ''}
+        >Українська</option>
+      </select>
+    </form>
+    <c:choose>
+      <c:when test="${sessionScope.user == null}">
+        <div class="navbar-nav">
+
+          <a class="btn btn-primary mx-2" href="<c:url value="/view/login.jsp"/>">
+            <fmt:message key='header.login'/></a>
+
+          <a class="btn btn-primary mx-2" href="<c:url value="/view/registration.jsp"/>">
+            <fmt:message key='header.registration'/></a>
+        </div>
+      </c:when>
+      <c:otherwise>
+        <div class="mx-2"><fmt:message key='header.loggedAs'/>: <b><i>${sessionScope.user.name}</i></b></div>
         <form  class="form-inline mx-2" action="<c:url value="/"/>" method="get">
           <input name="command" type="hidden" value="logOut">
-          <button class="btn btn-primary mt-3" type="submit">Log Out</button>
+          <button class="btn btn-primary mt-3" type="submit">
+            <fmt:message key='header.logOut'/>
+          </button>
         </form>
       </c:otherwise>
     </c:choose>
-
   </nav>
 </header>

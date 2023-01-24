@@ -1,5 +1,6 @@
 package com.my.controller.commands;
 
+import com.my.controller.commands.implementations.ChangeLanguage;
 import com.my.controller.commands.implementations.account.*;
 import com.my.controller.commands.implementations.credit_card.AddCreditCard;
 import com.my.controller.commands.implementations.credit_card.DeleteCreditCard;
@@ -50,6 +51,9 @@ public class CommandContainer {
 
         commands.put("getAccountsAdmin", new GetAccountsAdmin(userService, accountService, creditCardService));
         commands.put("blockAccountAdmin", new BlockAccountAdmin(accountService));
+
+        commands.put("changeLanguage", new ChangeLanguage());
+
 
 
     }

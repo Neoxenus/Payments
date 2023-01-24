@@ -2,6 +2,14 @@
          pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:if test="${empty language}">
+  <c:set var="language" scope="session" value="${pageContext.request.locale.language}"/>
+</c:if>
+<c:if test="${!empty language}">
+  <fmt:setLocale value="${language}" scope="session"/>
+</c:if>
+
+<fmt:setBundle basename="Localization"/>
 <html>
 <head>
   <title>Payments</title>
@@ -19,7 +27,7 @@
 
     <input name="command" type="hidden" value="makePayment">
 
-    <label for="sender" class="form-label">My account</label>
+    <label for="sender" class="form-label"><fmt:message key="makePayment.myAccount"/> </label>
     <input id="sender" list="account" name="sender" autocomplete="off" class="form-control" required>
     <datalist id="account">
       <%--@elvariable id="accountListNotBlocked" type="java.util.List"--%>
@@ -28,19 +36,19 @@
       </c:forEach>
     </datalist>
     <br>
-    <label for="receiver" class="form-label">Receiver account</label>
+    <label for="receiver" class="form-label"><fmt:message key="payment.receiverAccount"/></label>
     <input type="text" autocomplete="off" name="receiver" class="form-control" required
            id="receiver">
     <br>
-    <label for="amount" class="form-label">Amount</label>
+    <label for="amount" class="form-label"><fmt:message key="payment.amount"/></label>
     <input type="text"  pattern="([\d]+([.][\d]{2})?)" autocomplete="off" required name="amount" class="form-control"
            id="amount">
     <br>
-    <label for="assignment" class="form-label">Assignment</label>
+    <label for="assignment" class="form-label"><fmt:message key="payment.assignment"/></label>
     <input type="text" autocomplete="off" name="assignment" class="form-control"
            id="assignment">
     <br>
-    <input type="submit" class="btn btn-info" value="Make Payment">
+    <input type="submit" class="btn btn-info" value="<fmt:message key="payment.makePayment"/>">
   </form>
 </div>
 <c:if test="${sessionScope.error == 'badSender'}">
