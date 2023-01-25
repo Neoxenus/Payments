@@ -1,6 +1,5 @@
 package com.my.model.services;
 
-import com.my.controller.Servlet;
 import com.my.model.dao.AccountDao;
 import com.my.model.dao.CreditCardDao;
 import com.my.model.dao.DaoFactory;
@@ -20,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PaymentService {
-    private static final int PAGINATION_SIZE = 5;
+    private static final int PAGINATION_PAYMENTS_SIZE = 5;
     public static final Logger logger = LogManager.getLogger(PaymentService.class);
     public static final String[] PAYMENT_SORT_TYPES = new String[]{"number", "oldToNew", "newToOld"};
 
@@ -63,13 +62,13 @@ public class PaymentService {
         List<Payment> paymentList = findPaymentsByUserId(userId);
         sortPaymentsByParameter(paymentList, sortType);
         pageNumber = getPage(userId, pageNumber, pageCommand);
-        int start = (pageNumber - 1) * PAGINATION_SIZE;
-        int end = Math.min(start + PAGINATION_SIZE, paymentList.size());
+        int start = (pageNumber - 1) * PAGINATION_PAYMENTS_SIZE;
+        int end = Math.min(start + PAGINATION_PAYMENTS_SIZE, paymentList.size());
         return paymentList.subList(start, end);
     }
     public Integer getPage(int userId, Integer pageNumber, String pageCommand){
         List<Payment> paymentList = findPaymentsByUserId(userId);
-        int maxPage = paymentList.size() / PAGINATION_SIZE + (paymentList.size() % 5 == 0 ? 0 : 1);
+        int maxPage = paymentList.size() / PAGINATION_PAYMENTS_SIZE + (paymentList.size() % PAGINATION_PAYMENTS_SIZE == 0 ? 0 : 1);
         if(pageCommand.equals("next")){
             pageNumber = Math.min((pageNumber + 1), maxPage);
         } else if(pageCommand.equals("previous")){

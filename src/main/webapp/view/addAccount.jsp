@@ -39,7 +39,7 @@
         <input type="text" name="IBAN" class="form-control" required
                id="IBAN">
         <br/>
-        <input type="submit" class="btn btn-info" placeholder="<fmt:message key='accounts.addAccount'/>">
+        <input type="submit" class="btn btn-info" value="<fmt:message key='accounts.addAccount'/>">
     </form>
 </div>
 <c:if test="${sessionScope.error == 'accountExists'}">

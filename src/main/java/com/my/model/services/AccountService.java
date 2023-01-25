@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class AccountService {
+    public static final String[] ACCOUNT_SORT_TYPES = new String[]{"number", "accountName", "amount"};
     public static final Logger logger = LogManager.getLogger(AccountService.class);
 
     private final AccountDao accountDao = DaoFactory.getInstance().createAccountDao();
@@ -36,8 +37,8 @@ public class AccountService {
     }
     public void sortAccountsByParameter(List<Account> accountList, String sortType){
         switch (sortType){
-            case "Account Name" -> accountList.sort(Comparator.comparing(Account::getAccountName));
-            case "Amount" -> accountList.sort(Comparator.comparing(Account::getBalanceAmount));
+            case "accountName" -> accountList.sort(Comparator.comparing(Account::getAccountName));
+            case "amount" -> accountList.sort(Comparator.comparing(Account::getBalanceAmount));
             default -> accountList.sort(Comparator.comparing(Account::getNumber));//by number
         }
         //return accountList;

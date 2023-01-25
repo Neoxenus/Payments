@@ -16,15 +16,15 @@ import java.io.IOException;
 /**
  * todo
  * <p>
- * internationalization:
- * add to some enums of block status and roles, also for selectors to sorting
+ * internationalization!
  * <p>
+ * add selectors for admin accounts sort
  * pagination
  * for users
+ * for accounts
  * <p>
  * tests
  * documentation
- * probably add selectors for admin account check
  *
  */
 

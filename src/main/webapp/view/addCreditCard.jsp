@@ -40,7 +40,7 @@
         <input type="text" autocomplete="off" pattern="([\d]{4}-((0?[1-9])|(1[0-2])))" name="expire_date" class="form-control" required
                id="expire_date">
         <br/>
-        <input type="submit" class="btn btn-info" placeholder="<fmt:message key='account.table.addCreditCard'/>">
+        <input type="submit" class="btn btn-info" value="<fmt:message key='account.table.addCreditCard'/>">
     </form>
 </div>
 <c:if test="${sessionScope.error == 'creditCardExists'}">

@@ -33,29 +33,72 @@
             <th>Phone number</th>
             <th>Role</th>
             <th>Blocked status</th>
-            <th></th>
+            <th>
+                <form action="<c:url value="/"/>" method="get">
+                    <input name="command" type="hidden" value="getAccountsAdmin">
+                    <input name="userId" type="hidden" value="${showedUser.id}">
+                    <label for="sortSelect"><fmt:message key='account.table.sortingBy'/>:</label>
+                    <select class="form-select" id="sortSelect" name="accountSortType" onchange="this.form.submit()">
+                        <%--@elvariable id="accountSortType" type="java.lang.String"--%>
+                        <%--@elvariable id="accountSortTypes" type="java.util.List"--%>
+                        <c:forEach var="type" items="${accountSortTypes}" varStatus="loop">
+                            <option value="${type}" ${accountSortType eq type ? 'selected' : ''}>
+                                <fmt:message key="account.sort.${type}"/>
+                            </option>
+                        </c:forEach>
+                    </select>
+                </form>
+            </th>
         </tr>
         <%--@elvariable id="showedUser" type="com.my.model.entities.User"--%>
         <tr>
             <td>${showedUser.name}</td>
             <td>${showedUser.email}</td>
             <td>${showedUser.phoneNumber}</td>
-            <td>${showedUser.role}</td>
-            <td>${showedUser.isBlocked}</td>
+            <td>
+                <c:choose>
+                    <c:when test="${showedUser.role eq 'ADMIN'}">
+                        <fmt:message key='user.role.admin'/>
+                    </c:when>
+                    <c:otherwise>
+                        <fmt:message key='user.role.user'/>
+                    </c:otherwise>
+                </c:choose>
+            </td>
+            <td>
+                <c:choose>
+                    <c:when test="${showedUser.isBlocked eq 'ACTIVE'}">
+                        <fmt:message key='user.blockedStatus.active'/>
+                    </c:when>
+                    <c:otherwise>
+                        <fmt:message key='user.blockedStatus.blocked'/>
+                    </c:otherwise>
+                </c:choose>
+                <%--                  ${account.isBlocked}--%>
+            </td>
             <td class="d-flex justify-content-around">
                 <form  class="form-inline mx-1" method="post" action="<c:url value="/"/>">
                     <input name="command" type="hidden" value="blockUser">
                     <input name="userId" type="hidden" value="${showedUser.id}">
-                    <button class="btn btn-sm btn-warning mt-3"
-                    ${(showedUser.role eq 'ADMIN' and showedUser.isBlocked eq 'ACTIVE')? 'disabled' : ''}
-                            type="submit">${showedUser.isBlocked eq 'ACTIVE' ? 'Block' : 'Unblock'}</button>
+                    <c:choose>
+                        <c:when test="${showedUser.isBlocked eq 'ACTIVE'}">
+                            <button class="btn btn-sm btn-warning mt-3"
+                                ${(showedUser.role eq 'ADMIN' and showedUser.isBlocked eq 'ACTIVE')? 'disabled' : ''}
+                                    type="submit"><fmt:message key='user.block'/> </button>
+                        </c:when>
+                        <c:otherwise>
+                            <button class="btn btn-sm btn-warning mt-3"
+                                ${(showedUser.role eq 'ADMIN' and showedUser.isBlocked eq 'ACTIVE')? 'disabled' : ''}
+                                    type="submit"><fmt:message key='user.unblock'/> </button>
+                        </c:otherwise>
+                    </c:choose>
                 </form>
                 <form  class="form-inline mx-1" action="<c:url value="/"/>" method="post">
                     <input name="command" type="hidden" value="promoteUser">
                     <input name="userId" type="hidden" value="${showedUser.id}">
                     <button class="btn btn-sm btn-success mt-3"
-                        ${showedUser.role eq 'USER' ? '' : 'disabled'}
-                            type="submit">Promote</button>
+                    ${showedUser.role eq 'USER' ? '' : 'disabled'}
+                            type="submit"><fmt:message key='user.promote'/></button>
                 </form>
             </td>
         </tr>
@@ -83,7 +126,20 @@
                     <fmt:formatDate value="${parsedDateTime}" pattern="dd.MM.yyyy HH:mm:ss"/>
                 </td>
                 <td><fmt:formatNumber type="number" maxFractionDigits="2" value="${account.balanceAmount}"/></td>
-                <td>${account.isBlocked}</td>
+                <td rowspan="${rowspan}">
+                    <c:choose>
+                        <c:when test="${account.isBlocked eq 'BLOCKED'}">
+                            <fmt:message key='account.table.blockedStatus.blocked'/>
+                        </c:when>
+                        <c:when test="${account.isBlocked eq 'APPROVAL'}">
+                            <fmt:message key='account.table.blockedStatus.approval'/>
+                        </c:when>
+                        <c:otherwise>
+                            <fmt:message key='account.table.blockedStatus.active'/>
+                        </c:otherwise>
+                    </c:choose>
+                        <%--                  ${account.isBlocked}--%>
+                </td>
                 <td class="d-flex justify-content-around">
                     <form  class="form-inline mx-1" method="get" action="<c:url value="/"/>">
                         <input name="command" type="hidden" value="blockAccountAdmin">

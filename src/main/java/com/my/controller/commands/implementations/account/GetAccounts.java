@@ -11,6 +11,8 @@ import com.my.model.services.CreditCardService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
+import static com.my.model.services.AccountService.ACCOUNT_SORT_TYPES;
+
 public class GetAccounts implements Command {
     private AccountService accountService;
     private CreditCardService creditCardService;
@@ -33,7 +35,7 @@ public class GetAccounts implements Command {
         if(sortType == null){
             sortType = Objects.requireNonNullElse(
                     (String)request.getSession().getAttribute("accountSortType"),
-                    "Number");
+                    ACCOUNT_SORT_TYPES[0]);
         }
 
         List<Account> accountList = accountService.findByUserId(currentUser.getId());
@@ -43,7 +45,7 @@ public class GetAccounts implements Command {
 
         request.getSession().setAttribute("accountSortType", sortType);
         request.getSession().setAttribute("accountSortTypes",
-                Arrays.stream(new String[]{"Number", "Account Name", "Amount"}).toList());
+                Arrays.stream(ACCOUNT_SORT_TYPES).toList());
         request.getSession().setAttribute("accountList", accountList);
         request.getSession().setAttribute("creditCardMap", creditCardMap);
         return "redirect:/view/accounts.jsp";

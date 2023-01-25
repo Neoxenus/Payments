@@ -90,7 +90,17 @@
             <td >${accountMap.get(payment.senderAccountId).getNumber()}</td>
             <td >${accountMap.get(payment.receiverAccountId).getNumber()}</td>
             <td >${payment.assignment}</td>
-            <td >${payment.status}</td>
+            <td >
+              <c:choose>
+                <c:when test="${payment.status == 'SENT'}">
+                  <fmt:message key='payment.status.sent'/>
+                </c:when>
+                <c:otherwise>
+                  <fmt:message key='payment.status.prepared'/>
+                </c:otherwise>
+              </c:choose>
+
+            </td>
 
             <td  class="d-flex justify-content-around">
               <form  class="form-inline" method="post" action="<c:url value="/"/>">

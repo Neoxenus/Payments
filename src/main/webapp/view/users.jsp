@@ -42,8 +42,27 @@
                 <td>${user.name}</td>
                 <td>${user.email}</td>
                 <td>${user.phoneNumber}</td>
-                <td>${user.role}</td>
-                <td>${user.isBlocked}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${user.role eq 'ADMIN'}">
+                            <fmt:message key='user.role.admin'/>
+                        </c:when>
+                        <c:otherwise>
+                            <fmt:message key='user.role.user'/>
+                        </c:otherwise>
+                    </c:choose>
+                </td>
+                <td>
+                    <c:choose>
+                        <c:when test="${user.isBlocked eq 'ACTIVE'}">
+                            <fmt:message key='user.blockedStatus.active'/>
+                        </c:when>
+                        <c:otherwise>
+                            <fmt:message key='user.blockedStatus.blocked'/>
+                        </c:otherwise>
+                    </c:choose>
+                        <%--                  ${account.isBlocked}--%>
+                </td>
                 <td class="d-flex justify-content-around">
                     <form  class="form-inline mx-1" action="<c:url value="/"/>" method="get">
                         <input name="command" type="hidden" value="getAccountsAdmin">
@@ -55,7 +74,7 @@
                         <input name="command" type="hidden" value="blockUser">
                         <input name="userId" type="hidden" value="${user.id}">
                         <c:choose>
-                            <c:when test="${account.isBlocked eq 'ACTIVE'}">
+                            <c:when test="${user.isBlocked eq 'ACTIVE'}">
                                 <button class="btn btn-sm btn-warning mt-3"
                                     ${(user.role eq 'ADMIN' and user.isBlocked eq 'ACTIVE')? 'disabled' : ''}
                                         type="submit"><fmt:message key='user.block'/> </button>
@@ -78,5 +97,23 @@
             </tr>
         </c:forEach>
     </table>
+    <div class="row">
+        <div class="col d-flex justify-content-center">
+            <form method="get" action="<c:url value="/"/>">
+                <input name="command" type="hidden" value="getUsersAdmin">
+                <input name="pageCommand" type="hidden" value="previous">
+                <input type="submit" value="<<" />
+            </form>
+            <%--@elvariable id="pageNumber" type="int"--%>
+            <div class="p-1">
+                ${pageNumber}
+            </div>
+            <form method="get" action="<c:url value="/"/>">
+                <input name="command" type="hidden" value="getUsersAdmin">
+                <input name="pageCommand" type="hidden" value="next">
+                <input type="submit" value=">>" />
+            </form>
+        </div>
+    </div>
 </div>
 </body>

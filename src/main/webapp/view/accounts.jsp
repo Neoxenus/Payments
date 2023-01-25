@@ -18,8 +18,8 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossorigin="anonymous">
   <style>
-    tr > .right-border{
-      border-right: 1px solid #000;
+    tr > .right-border + td, tr > .right-border + th{
+      border-left: 1px solid #000;
     }
   </style>
 </head>
@@ -56,21 +56,12 @@
           <input name="command" type="hidden" value="getAccounts">
           <label for="sortSelect"><fmt:message key='account.table.sortingBy'/>:</label>
           <select class="form-select" id="sortSelect" name="accountSortType" onchange="this.form.submit()">
+            <%--@elvariable id="accountSortType" type="java.lang.String"--%>
             <%--@elvariable id="accountSortTypes" type="java.util.List"--%>
             <c:forEach var="type" items="${accountSortTypes}" varStatus="loop">
-              <c:choose>
-                <%--@elvariable id="accountSortType" type="java.lang.String"--%>
-                <c:when test="${accountSortType == type}">
-                  <option value="${type}" selected = "selected">
-                      ${type}
-                  </option>
-                </c:when>
-                <c:otherwise>
-                  <option value="${type}">
-                      ${type}
-                  </option>
-                </c:otherwise>
-              </c:choose>
+              <option value="${type}" ${accountSortType eq type ? 'selected' : ''}>
+                <fmt:message key="account.sort.${type}"/>
+              </option>
             </c:forEach>
           </select>
         </form>
@@ -107,7 +98,20 @@
                 <fmt:formatDate value="${parsedDateTime}" pattern="dd.MM.yyyy HH:mm:ss"/>
               </td>
               <td rowspan="${rowspan}"><fmt:formatNumber type="number" maxFractionDigits="2" value="${account.balanceAmount}"/></td>
-              <td rowspan="${rowspan}">${account.isBlocked}</td>
+              <td rowspan="${rowspan}">
+                <c:choose>
+                  <c:when test="${account.isBlocked eq 'BLOCKED'}">
+                    <fmt:message key='account.table.blockedStatus.blocked'/>
+                  </c:when>
+                  <c:when test="${account.isBlocked eq 'APPROVAL'}">
+                    <fmt:message key='account.table.blockedStatus.approval'/>
+                  </c:when>
+                  <c:otherwise>
+                    <fmt:message key='account.table.blockedStatus.active'/>
+                  </c:otherwise>
+                </c:choose>
+<%--                  ${account.isBlocked}--%>
+              </td>
               <td rowspan="${rowspan}" class="d-flex justify-content-around right-border">
                 <form  class="form-inline mx-1" method="get" action="<c:url value="/"/>">
                   <input name="command" type="hidden" value="blockAccount">

@@ -41,7 +41,7 @@ public class GetPayments implements Command {
                     (String)request.getSession().getAttribute("paymentSortType"),
                     PAYMENT_SORT_TYPES[0]);
         }
-        Integer pageNumber = Integer.valueOf(Optional.ofNullable(request.getParameter("pageNumber")).orElse("1"));
+        Integer pageNumber = Integer.valueOf(Optional.ofNullable(request.getParameter("paymentPageNumber")).orElse("1"));
         String pageCommand = Optional.ofNullable(request.getParameter("pageCommand")).orElse("");
         Servlet.logger.info("page number:" + pageNumber);
         List<Payment> paymentList =
@@ -64,7 +64,7 @@ public class GetPayments implements Command {
 
         Map<Integer, Account> accountMap = accountService.findAll();
         request.getSession().setAttribute("accountMap", accountMap);
-        request.getSession().setAttribute("pageNumber", pageNumber);
+        request.getSession().setAttribute("paymentPageNumber", pageNumber);
 
 
         return "redirect:/view/payments.jsp";

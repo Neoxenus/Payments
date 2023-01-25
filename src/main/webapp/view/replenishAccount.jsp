@@ -29,11 +29,11 @@
     <input name="command" type="hidden" value="replenishAccount">
     <input name="accountId" type="hidden" value="${param.accountId}">
 
-    <label for="amount" class="form-label"><fmt:message key='account.amountInFormat'/> </label>
-    <input type="text" pattern="([\d]+([.][\d]{2})?)" name="amount" class="form-control"
+    <label for="amount" class="form-label"><fmt:message key='account.amount'/> </label>
+    <input type="text" pattern="([\d]+([.][\d]{2})?)" name="amount" class="form-control" placeholder="<fmt:message key='account.amount.format'/>"
            id="amount">
     <br/>
-    <input type="submit" class="btn btn-info" placeholder="<fmt:message key='account.table.replenish'/>">
+    <input type="submit" class="btn btn-info" value="<fmt:message key='account.table.replenish'/>">
   </form>
 </div>
 </body>

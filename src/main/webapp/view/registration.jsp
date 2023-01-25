@@ -39,7 +39,7 @@
         <input type="text" autocomplete="off" name="password" required class="form-control"
                id="password">
         <br/>
-        <input type="submit" class="btn btn-info" placeholder="<fmt:message key='user.register'/>">
+        <input type="submit" class="btn btn-info" value="<fmt:message key='user.register'/>">
     </form>
 </div>
 <c:if test="${sessionScope.error == 'userExists'}">
