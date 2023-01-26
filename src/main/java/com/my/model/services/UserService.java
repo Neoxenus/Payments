@@ -5,12 +5,15 @@ import com.my.model.dao.UserDao;
 import com.my.model.entities.User;
 import com.my.model.entities.enums.Block;
 import com.my.model.entities.enums.Role;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.Optional;
 
 public class UserService {
     public static final int PAGINATION_USERS_SIZE = 3;
+
+    @Getter
     private final UserDao userDao = DaoFactory.getInstance().createUserDao();
     public boolean addUser(String username, String phoneNumber, String email, String password){
         User user = new User(username, phoneNumber, email, password);

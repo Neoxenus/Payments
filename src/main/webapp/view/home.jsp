@@ -23,3 +23,6 @@
 <jsp:include page="header.jsp"/>
 <%--Language <fmt:message key='home.demo'/>--%>
 <%--<fmt:message key='header.home'/>--%>
+<c:if test="${sessionScope.user != null && sessionScope.user.isBlocked != 'ACTIVE'}">
+      <h3><fmt:message key='home.blocked.message'/></h3>
+</c:if>

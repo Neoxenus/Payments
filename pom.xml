@@ -16,7 +16,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.13.2</version>
       <scope>test</scope>
     </dependency>
 
@@ -66,16 +66,5 @@
   </dependencies>
   <build>
     <finalName>Payments</finalName>
-<!--      <plugins>-->
-<!--          <plugin>-->
-<!--              <groupId>org.apache.maven.plugins</groupId>-->
-<!--              <artifactId>maven-compiler-plugin</artifactId>-->
-<!--              <configuration>-->
-<!--                  <source>18</source>-->
-<!--                  <target>18</target>-->
-<!--                  <compilerArgs>&#45;&#45;enable-preview</compilerArgs>-->
-<!--              </configuration>-->
-<!--          </plugin>-->
-<!--      </plugins>-->
   </build>
 </project>

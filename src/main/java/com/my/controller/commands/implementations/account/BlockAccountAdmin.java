@@ -16,7 +16,7 @@ public class BlockAccountAdmin implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         int accountId = Integer.parseInt(request.getParameter("accountId"));
-        Account account = accountService.setBlockedAdmin(accountId);
+        Account account = accountService.blockAdmin(accountId);
         int userId = account.getUserId();
         return "redirect:/?command=getAccountsAdmin&userId="+userId;
     }

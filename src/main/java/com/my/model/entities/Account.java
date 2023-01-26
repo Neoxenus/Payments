@@ -24,11 +24,11 @@ public class Account {
     private Block isBlocked;
     private int userId;
 
-    public Account(String number, String accountName, String IBAN, LocalDateTime dateOfRegistration, double balanceAmount, int userId) {
+    public Account(String number, String accountName, String IBAN, double balanceAmount, int userId) {
         this.number = number;
         this.accountName = accountName;
         this.IBAN = IBAN;
-        this.dateOfRegistration = dateOfRegistration;
+        this.dateOfRegistration = LocalDateTime.now();
         this.balanceAmount = balanceAmount;
         this.isBlocked = Block.ACTIVE;
         this.userId = userId;

@@ -16,6 +16,7 @@ public interface CreditCardDao extends GenericDao<CreditCard> {
      * The method gets all the accounts by account's id.
      *
      * @param accountId - account's id.
+     * @return list of credit cards associated with account.
      */
     List<CreditCard> findByAccountId(int accountId);
 

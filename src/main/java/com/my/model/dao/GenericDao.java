@@ -19,11 +19,13 @@ public interface GenericDao<T> extends AutoCloseable{
      * The method gets the information about the entity from the database by id.
      *
      * @param id - entity's id.
+     * @return entity with such id.
      */
     T findById(Integer id);
 
     /**
      * The method gets the information about all the entities from the database.
+     * @return list of all entities
      */
     List<T> findAll();
 

@@ -15,6 +15,7 @@ public interface AccountDao extends GenericDao<Account>{
      * The method gets all the accounts by user's id.
      *
      * @param userId - user's id.
+     * @return list of accounts associated with user.
      */
     List<Account> findByUserId(int userId);
 
@@ -22,6 +23,7 @@ public interface AccountDao extends GenericDao<Account>{
      * The method gets information about the account by its number.
      *
      * @param number - account's number.
+     * @return account with such number.
      */
     Account findByNumber(String number);
 }

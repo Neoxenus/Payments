@@ -15,4 +15,6 @@ public final class AccountQueries {
     public static final String UPDATE = 
             "UPDATE account SET number=?, account_name=?, iban=?, date_of_registration=?, " +
                     "balance_amount=?, is_blocked=?::block_type, user_id=? WHERE id=?";
+    public static final String DELETE =
+            "DELETE FROM account WHERE id=?";
 }

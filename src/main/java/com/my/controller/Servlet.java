@@ -13,20 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-/**
- * todo
- * <p>
- * internationalization!
- * <p>
- * add selectors for admin accounts sort
- * pagination
- * for users
- * for accounts
- * <p>
- * tests
- * documentation
- *
- */
 
 
 

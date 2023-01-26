@@ -4,6 +4,7 @@ import com.my.model.dao.AccountDao;
 import com.my.model.dao.DaoFactory;
 import com.my.model.entities.Account;
 import com.my.model.entities.enums.Block;
+import lombok.Getter;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -16,11 +17,13 @@ import java.util.stream.Collectors;
 public class AccountService {
     public static final String[] ACCOUNT_SORT_TYPES = new String[]{"number", "accountName", "amount"};
     public static final Logger logger = LogManager.getLogger(AccountService.class);
+    public static final double DEFAULT_AMOUNT = 1000.0;
 
+    @Getter
     private final AccountDao accountDao = DaoFactory.getInstance().createAccountDao();
 
     public boolean addAccount(String number, String accountName, String IBAN, int userId){
-        Account account = new Account(number, accountName, IBAN, LocalDateTime.now(), 1000.0,
+        Account account = new Account(number, accountName, IBAN, DEFAULT_AMOUNT,
                 userId);
         Account dbAccount = accountDao.findByNumber(number);
         if(dbAccount == null){
@@ -43,12 +46,13 @@ public class AccountService {
         }
         //return accountList;
     }
+
     public Map<Integer, Account> findAll(){
         List<Account> accountList = accountDao.findAll();
         return accountList.stream().collect(Collectors.toMap(Account::getId, e->e ));
     }
 
-    public void setBlocked(int accountId){
+    public void block(int accountId){
         Account account = accountDao.findById(accountId);
         if(account == null){
             logger.warn("Failed to get account with id " + accountId +" from db");
@@ -62,7 +66,7 @@ public class AccountService {
             return;
         accountDao.update(account);
     }
-    public Account setBlockedAdmin(int accountId){
+    public Account blockAdmin(int accountId){
         Account account = accountDao.findById(accountId);
         if(account == null){
             logger.warn("Failed to get account with id " + accountId +" from db");

@@ -13,6 +13,7 @@ public interface UserDao extends GenericDao<User> {
      * The method gets information about the user by its email.
      *
      * @param email - user's number.
+     * @return user with such email.
      */
     User findByEmail(String email);
 

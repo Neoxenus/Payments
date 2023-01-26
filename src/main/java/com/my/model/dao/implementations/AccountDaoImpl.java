@@ -134,7 +134,14 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public void delete(Integer id) {
-
+        try {
+            PreparedStatement statement = connection.prepareStatement(AccountQueries.DELETE);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("An error occurred while deleting a account from the db", e);
+            throw new DBException("An error occurred while deleting a account from the db", e);
+        }
     }
 
     @Override

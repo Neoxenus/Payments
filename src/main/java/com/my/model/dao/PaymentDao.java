@@ -15,6 +15,7 @@ public interface PaymentDao extends GenericDao<Payment>{
      * The method gets all the payments associated with account's id.
      *
      * @param accountId - account's id.
+     * @return list of payments associated with account.
      */
     List<Payment> findByAccountId(int accountId);
 }

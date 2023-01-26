@@ -8,6 +8,7 @@ import com.my.model.entities.Account;
 import com.my.model.entities.Payment;
 import com.my.model.entities.User;
 import com.my.model.entities.enums.PaymentStatus;
+import lombok.Getter;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -23,6 +24,7 @@ public class PaymentService {
     public static final Logger logger = LogManager.getLogger(PaymentService.class);
     public static final String[] PAYMENT_SORT_TYPES = new String[]{"number", "oldToNew", "newToOld"};
 
+    @Getter
     private final PaymentDao paymentDao = DaoFactory.getInstance().createPaymentDao();
     private final AccountDao accountDao = DaoFactory.getInstance().createAccountDao();
     private final CreditCardDao creditCardDao = DaoFactory.getInstance().createCreditCardDao();
@@ -35,7 +37,7 @@ public class PaymentService {
         if(senderAccount.getUserId() != currentUser.getId())
             return "badSender";
         Account receiverAccount = accountDao.findByNumber(receiverAccountNumber);
-        if(receiverAccount == null)
+        if(receiverAccount == null || senderAccount.equals(receiverAccount))
             return "badReceiver";
         Payment payment = new Payment(amount, assignment, senderAccount.getId(), receiverAccount.getId());
         paymentDao.add(payment);

@@ -5,6 +5,7 @@ import com.my.model.dao.CreditCardDao;
 import com.my.model.dao.DaoFactory;
 import com.my.model.entities.Account;
 import com.my.model.entities.CreditCard;
+import lombok.Getter;
 
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CreditCardService {
+    @Getter
     private final CreditCardDao creditCardDao = DaoFactory.getInstance().createCreditCardDao();
     private final AccountDao accountDao = DaoFactory.getInstance().createAccountDao();
 
