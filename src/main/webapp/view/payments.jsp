@@ -133,7 +133,7 @@
       </form>
       <%--@elvariable id="pageNumber" type="int"--%>
       <div class="p-1">
-        ${pageNumber}
+        ${paymentPageNumber}
       </div>
       <form method="get" action="<c:url value="/"/>">
         <input name="command" type="hidden" value="getPayments">

@@ -54,8 +54,13 @@ public class Servlet extends HttpServlet {
         } else {
 
             Command command = CommandContainer.getCommand(commandName);
-            //page = command != null ? CommandContainer.doCommand(command, request) : "redirect:/";
-            page = CommandContainer.doCommand(command, request);
+            try{
+                page = CommandContainer.doCommand(command, request);
+
+            }catch (Exception e){
+                page = "redirect:/";
+            }
+            //page = CommandContainer.doCommand(command, request);
 
             if (page.contains("redirect")) {
                 logger.info("Redirect to "+ request.getContextPath() + page.replace("redirect:",""));
