@@ -24,6 +24,7 @@
 
 
 <br>
+<c:if test="${sessionScope.user.role == 'ADMIN'}">
 <div style="width: 80%; margin: auto">
     <h3 class="text-center">Users</h3>
     <hr>
@@ -116,4 +117,5 @@
         </div>
     </div>
 </div>
+</c:if>
 </body>

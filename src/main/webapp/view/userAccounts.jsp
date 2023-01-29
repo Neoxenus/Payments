@@ -24,6 +24,8 @@
 
 
 <br>
+
+<c:if test="${sessionScope.user.role == 'ADMIN'}">
 <div style="width: 80%; margin: auto">
     <h3 class="text-center">Accounts of user:</h3>
     <table class="table table-bordered align-middle">
@@ -165,4 +167,6 @@
         </c:forEach>
     </table>
 </div>
+</c:if>
+
 </body>
