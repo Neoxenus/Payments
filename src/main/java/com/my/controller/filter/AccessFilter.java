@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter("/")
+@WebFilter("/*")
 public class AccessFilter implements Filter {
     @Override
     public void init(FilterConfig config) throws ServletException {
@@ -25,8 +25,11 @@ public class AccessFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         String param = String.valueOf(request.getParameter("command"));
+        String uri = ((HttpServletRequest) request).getRequestURI();
+        //Servlet.logger.info(uri);
         if(param.contains("Admin")
-            || param.contains("User")){
+            || param.contains("User")
+            || uri.contains("user")){
             User user = (User) req.getSession().getAttribute("user");
             if (user == null || user.getRole().equals(Role.USER)) {
                 Servlet.logger.warn("User tried to access admin page without permission");
