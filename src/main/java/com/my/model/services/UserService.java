@@ -2,11 +2,13 @@ package com.my.model.services;
 
 import com.my.model.dao.DaoFactory;
 import com.my.model.dao.UserDao;
+import com.my.model.dao.util.SHA512Utils;
 import com.my.model.entities.User;
 import com.my.model.entities.enums.Block;
 import com.my.model.entities.enums.Role;
 import lombok.Getter;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +18,11 @@ public class UserService {
     @Getter
     private final UserDao userDao = DaoFactory.getInstance().createUserDao();
     public boolean addUser(String username, String phoneNumber, String email, String password){
+        try {
+            password = SHA512Utils.toHexString(SHA512Utils.getSHA(password));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
         User user = new User(username, phoneNumber, email, password);
         User dbUser = userDao.findByEmail(email);
         if(dbUser != null)
@@ -24,6 +31,12 @@ public class UserService {
         return true;
     }
     public Optional<User> findByEmailAndPassword(String email, String password){
+
+        try {
+            password = SHA512Utils.toHexString(SHA512Utils.getSHA(password));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
         User user = userDao.findByEmail(email);
         if(user != null && user.getPassword().equals(password))
             return Optional.of(user);

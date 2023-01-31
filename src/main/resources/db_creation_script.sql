@@ -21,7 +21,7 @@ CREATE TABLE users
     email        VARCHAR(50) UNIQUE,
     phone_number VARCHAR(15),
     role         role_type,
-    password     varchar(100),
+    password     varchar,
     is_blocked   block_type
 );
 
@@ -60,13 +60,15 @@ CREATE TABLE IF NOT EXISTS payment
 
 ------------------
 INSERT INTO users VALUES(DEFAULT, 'Volodymyr Kyryliuk', 'kirilyukvolodimir2003@gmail.com', '1234567890', 'ADMIN',
-                           '1111', 'ACTIVE');
+                           '33275a8aa48ea918bd53a9181aa975f15ab0d0645398f5918a006d08675c1cb27d5c645dbd084eee56e675e25ba4019f2ecea37ca9e2995b49fcb12c096a032e',
+                         'ACTIVE');
 INSERT INTO account VALUES(DEFAULT, '0001', 'Volodymyr Kyryliuk', 'UA0001', '2021-08-24 10:23:54', 1000.00, 'ACTIVE', 1);
 ------------------
 
 
 INSERT INTO users VALUES(DEFAULT, 'Petro Petrov', 'petrov@gmail.com', '1234567891', 'USER',
-                         '1111', 'ACTIVE');
+                         '33275a8aa48ea918bd53a9181aa975f15ab0d0645398f5918a006d08675c1cb27d5c645dbd084eee56e675e25ba4019f2ecea37ca9e2995b49fcb12c096a032e',
+                         'ACTIVE');
 INSERT INTO account VALUES(DEFAULT, '0010', 'Ivan Petrov', 'UA0010', '2022-08-24 10:23:54', 2000.00, 'ACTIVE', 2);
 INSERT INTO account VALUES(DEFAULT, '0011', 'Petro Petrov', 'UA0011', '2022-09-24 10:24:54', 1000.00, 'ACTIVE', 2);
 INSERT INTO credit_card VALUES(DEFAULT, 'CC0011', '111', '2023-03', 3);
