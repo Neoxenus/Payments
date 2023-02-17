@@ -8,6 +8,7 @@ import com.my.model.dao.exceptions.DBException;
 import com.my.model.dao.mappers.UserMapper;
 import com.my.model.entities.Account;
 import com.my.model.entities.User;
+import com.my.model.services.UserService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -43,8 +44,8 @@ public class UserDaoImpl implements UserDao {
             statement.executeUpdate();
             logger.info("The user has been successfully inserted to the db");
         }catch (SQLException e){
-            logger.error("An error occurred while inserting a user into the db", e);
-            throw new DBException("An error occurred while inserting a user into the db", e);
+            logger.error("An error occurred while inserting a user into the db ", e);
+            throw new DBException("An error occurred while inserting a user into the db ", e);
         }
     }
 
@@ -59,8 +60,8 @@ public class UserDaoImpl implements UserDao {
             }
             return null;
         }catch (SQLException e){
-            logger.error("An error occurred while getting a user from the db", e);
-            throw new DBException("An error occurred while getting a user from the db",e);
+            logger.error("An error occurred while getting a user from the db ", e);
+            throw new DBException("An error occurred while getting a user from the db ",e);
         }
     }
 
@@ -75,8 +76,8 @@ public class UserDaoImpl implements UserDao {
                 result.add(userMapper.extractFromResultSet(rs));
             }
         } catch (SQLException e) {
-            logger.error("Failed to find users" + e);
-            throw new DBException("Failed to find users", e);
+            logger.error("Failed to find users " + e);
+            throw new DBException("Failed to find users ", e);
         }
         return result;
     }
@@ -98,8 +99,8 @@ public class UserDaoImpl implements UserDao {
             statement.executeUpdate();
             logger.info("The user has been successfully updated");
         }catch (SQLException e){
-            logger.error("An error occurred while updating a user", e);
-            throw new DBException("An error occurred while updating a user", e);
+            logger.error("An error occurred while updating a user ", e);
+            throw new DBException("An error occurred while updating a user ", e);
         }
     }
 
@@ -110,8 +111,8 @@ public class UserDaoImpl implements UserDao {
             statement.setInt(1, Math.toIntExact(id));
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("An error occurred while deleting a user from the db", e);
-            throw new DBException("An error occurred while deleting a user from the db", e);
+            logger.error("An error occurred while deleting a user from the db ", e);
+            throw new DBException("An error occurred while deleting a user from the db ", e);
         }
     }
 
@@ -122,8 +123,8 @@ public class UserDaoImpl implements UserDao {
             statement.setString(1, entity.getPhoneNumber());
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("An error occurred while deleting a user from the db", e);
-            throw new DBException("An error occurred while deleting a user from the db", e);
+            logger.error("An error occurred while deleting a user from the db ", e);
+            throw new DBException("An error occurred while deleting a user from the db ", e);
         }
     }
 
@@ -132,8 +133,8 @@ public class UserDaoImpl implements UserDao {
         try {
             connection.close();
         } catch (SQLException e) {
-            logger.error("Failed to close connection in UserDaoImpl");
-            throw new DBException("Failed to close connection", e);
+            logger.error("Failed to close connection in UserDaoImpl ");
+            throw new DBException("Failed to close connection ", e);
         }
     }
 
@@ -150,9 +151,44 @@ public class UserDaoImpl implements UserDao {
             }
         } catch (SQLException e) {
             logger.error("Cannot find user." + e);
-            throw new DBException("Cannot find user", e);
+            throw new DBException("Cannot find user ", e);
         }
-        logger.info("No user with such email");
+        logger.info("No user with such email ");
         return null;
+    }
+
+    @Override
+    public int getNumber() {
+        int numberOfUser = 0;
+
+        try(PreparedStatement ps = connection.prepareStatement(UserQueries.GET_NUMBER)) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                numberOfUser = rs.getInt(UserQueries.FIELD_NUMBER);
+            }
+        } catch (SQLException e) {
+            logger.error("Cannot get number of users " + e);
+            throw new DBException("Cannot get number of users ", e);
+        }
+        return numberOfUser;
+    }
+
+    @Override
+    public List<User> getUsersOnPage(int page) {
+        List<User> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(UserQueries.FIND_ON_PAGE)) {
+            ps.setInt(1, (page - 1) * UserService.PAGINATION_USERS_SIZE);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.add(userMapper.extractFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            logger.error("Failed to find users " + e);
+            throw new DBException("Failed to find users ", e);
+        }
+        return result;
     }
 }

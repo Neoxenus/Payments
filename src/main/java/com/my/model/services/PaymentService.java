@@ -71,6 +71,8 @@ public class PaymentService {
     public Integer getPage(int userId, Integer pageNumber, String pageCommand){
         List<Payment> paymentList = findPaymentsByUserId(userId);
         int maxPage = paymentList.size() / PAGINATION_PAYMENTS_SIZE + (paymentList.size() % PAGINATION_PAYMENTS_SIZE == 0 ? 0 : 1);
+        if(maxPage == 0)
+            maxPage = 1;
         if(pageCommand.equals("next")){
             pageNumber = Math.min((pageNumber + 1), maxPage);
         } else if(pageCommand.equals("previous")){

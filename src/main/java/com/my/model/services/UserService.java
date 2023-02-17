@@ -2,7 +2,7 @@ package com.my.model.services;
 
 import com.my.model.dao.DaoFactory;
 import com.my.model.dao.UserDao;
-import com.my.model.dao.util.SHA512Utils;
+import com.my.model.util.SHA512Utils;
 import com.my.model.entities.User;
 import com.my.model.entities.enums.Block;
 import com.my.model.entities.enums.Role;
@@ -46,14 +46,10 @@ public class UserService {
 //        return userDao.findAll();
 //    }
     public List<User> getUsers(Integer pageNumber, String pageCommand){
-        List<User> userList = userDao.findAll();
-        pageNumber = getPage(pageNumber, pageCommand);
-        int start = (pageNumber - 1) * PAGINATION_USERS_SIZE;
-        int end = Math.min(start + PAGINATION_USERS_SIZE, userList.size());
-        return userList.subList(start, end);
+        return userDao.getUsersOnPage(getPage(pageNumber,pageCommand));
     }
     public Integer getPage(Integer pageNumber, String pageCommand){
-        int userListSize = userDao.findAll().size();
+        int userListSize = userDao.getNumber();
         int maxPage = userListSize / PAGINATION_USERS_SIZE + (userListSize % PAGINATION_USERS_SIZE == 0 ? 0 : 1);
         if(pageCommand.equals("next")){
             pageNumber = Math.min((pageNumber + 1), maxPage);

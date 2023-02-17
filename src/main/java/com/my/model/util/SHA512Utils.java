@@ -1,4 +1,4 @@
-package com.my.model.dao.util;
+package com.my.model.util;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;

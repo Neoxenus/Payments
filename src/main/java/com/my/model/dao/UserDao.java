@@ -2,6 +2,8 @@ package com.my.model.dao;
 
 import com.my.model.entities.User;
 
+import java.util.List;
+
 /**
  * Interface UserDao is used to access the information about users from the database.
  *
@@ -16,5 +18,6 @@ public interface UserDao extends GenericDao<User> {
      * @return user with such email.
      */
     User findByEmail(String email);
-
+    int getNumber();
+    List<User> getUsersOnPage(int page);
 }
