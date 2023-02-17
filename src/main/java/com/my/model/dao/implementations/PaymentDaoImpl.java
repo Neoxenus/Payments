@@ -73,8 +73,8 @@ public class PaymentDaoImpl implements PaymentDao {
     public List<Payment> findByUserId(int userId, int page, String sortType) {
         String query = PaymentQueries.FIND_BY_USER_ID +
         switch (sortType){
-            case "oldToNew" -> PaymentQueries.BY_DATE_ASC;
-            case "newToOld" -> PaymentQueries.BY_DATE_DESC;
+            case "oldToNew" -> PaymentQueries.BY_DATE_DESC;
+            case "newToOld" -> PaymentQueries.BY_DATE_ASC;
             default -> PaymentQueries.BY_NUMBER;
         }
         + PaymentQueries.LIMIT;
