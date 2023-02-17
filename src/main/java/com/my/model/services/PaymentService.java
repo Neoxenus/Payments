@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PaymentService {
-    private static final int PAGINATION_PAYMENTS_SIZE = 5;
+    public static final int PAGINATION_PAYMENTS_SIZE = 5;
     public static final Logger logger = LogManager.getLogger(PaymentService.class);
     public static final String[] PAYMENT_SORT_TYPES = new String[]{"number", "oldToNew", "newToOld"};
 
@@ -61,16 +61,13 @@ public class PaymentService {
 
     }
     public List<Payment> getPayments(int userId, Integer pageNumber, String pageCommand, String sortType){
-        List<Payment> paymentList = findPaymentsByUserId(userId);
-        sortPaymentsByParameter(paymentList, sortType);
         pageNumber = getPage(userId, pageNumber, pageCommand);
-        int start = (pageNumber - 1) * PAGINATION_PAYMENTS_SIZE;
-        int end = Math.min(start + PAGINATION_PAYMENTS_SIZE, paymentList.size());
-        return paymentList.subList(start, end);
+
+        return paymentDao.findByUserId(userId, pageNumber, sortType);
     }
     public Integer getPage(int userId, Integer pageNumber, String pageCommand){
-        List<Payment> paymentList = findPaymentsByUserId(userId);
-        int maxPage = paymentList.size() / PAGINATION_PAYMENTS_SIZE + (paymentList.size() % PAGINATION_PAYMENTS_SIZE == 0 ? 0 : 1);
+        int paymentListSize = paymentDao.getNumberByUserId(userId);
+        int maxPage = paymentListSize / PAGINATION_PAYMENTS_SIZE + (paymentListSize % PAGINATION_PAYMENTS_SIZE == 0 ? 0 : 1);
         if(maxPage == 0)
             maxPage = 1;
         if(pageCommand.equals("next")){
@@ -80,25 +77,5 @@ public class PaymentService {
         }
         return pageNumber;
     }
-    private void sortPaymentsByParameter(List<Payment> accountList, String sortType){
-        switch (sortType){
-            case "oldToNew" -> accountList.sort(Comparator.comparing(Payment::getTime));
-            case "newToOld" -> accountList.sort(Comparator.comparing(Payment::getTime).reversed());
-            default -> accountList.sort(Comparator.comparing(Payment::getId));//by number
-        }
-        //return accountList;
-    }
-    private List<Payment> findPaymentsByUserId(int userId){
-        List<Account> accounts = accountDao.findByUserId(userId);
-        List<Payment> result = new ArrayList<>();
-        accounts.forEach(e -> {
-            List<Payment> paymentList = paymentDao.findByAccountId(e.getId());
-            paymentList = paymentList
-                    .stream()
-                    .filter(p -> !(p.getStatus().equals(PaymentStatus.PREPARED) && e.getId()==p.getReceiverAccountId()))
-                    .collect(Collectors.toList());
-            result.addAll(paymentList);
-        });
-        return new ArrayList<>(new LinkedHashSet<>(result));
-    }
+
 }
