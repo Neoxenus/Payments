@@ -12,6 +12,8 @@ import com.my.model.entities.Account;
 import com.my.model.entities.Payment;
 import com.my.model.entities.User;
 import com.my.model.entities.enums.PaymentStatus;
+import com.my.model.services.PaymentService;
+import com.my.model.services.UserService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -38,11 +40,6 @@ public class PaymentDaoImpl implements PaymentDao {
             //logger.info("before execute query, account id: " + accountId);
 
             ResultSet rs = ps.executeQuery();
-//            logger.info("after execute query");
-//            if(rs.isAfterLast() || rs.isClosed() || rs){
-//                logger.info("No such payments with account id: " + accountId);
-//                return result;
-//            }
 
             while (rs.next()) {
                 result.add(paymentMapper.extractFromResultSet(rs));
@@ -53,6 +50,53 @@ public class PaymentDaoImpl implements PaymentDao {
         }
         return result;
     }
+
+    @Override
+    public int getNumberByUserId(int userId) {
+        int numberOfPayments = 0;
+
+        try(PreparedStatement ps = connection.prepareStatement(PaymentQueries.GET_NUMBER_BY_USER_ID)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                numberOfPayments = rs.getInt(PaymentQueries.FIELD_NUMBER);
+            }
+        } catch (SQLException e) {
+            logger.error("Cannot get number of payments " + e);
+            throw new DBException("Cannot get number of payments ", e);
+        }
+        return numberOfPayments;
+    }
+
+    @Override
+    public List<Payment> findByUserId(int userId, int page, String sortType) {
+        String query = PaymentQueries.FIND_BY_USER_ID +
+        switch (sortType){
+            case "oldToNew" -> PaymentQueries.BY_DATE_DESC;
+            case "newToOld" -> PaymentQueries.BY_DATE_ASC;
+            default -> PaymentQueries.BY_NUMBER;
+        }
+        + PaymentQueries.LIMIT;
+
+        List<Payment> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, (page - 1) * PaymentService.PAGINATION_PAYMENTS_SIZE);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                result.add(paymentMapper.extractFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            logger.error("Failed to find payments" + e);
+            throw new DBException("Failed to find payments", e);
+        }
+        return result;
+    }
+
     @Override
     public void add(Payment entity) {
         if (entity == null){

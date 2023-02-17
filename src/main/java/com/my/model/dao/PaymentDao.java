@@ -18,4 +18,6 @@ public interface PaymentDao extends GenericDao<Payment>{
      * @return list of payments associated with account.
      */
     List<Payment> findByAccountId(int accountId);
+    int getNumberByUserId(int userId);
+    List<Payment> findByUserId(int userId, int page, String sortType);
 }
