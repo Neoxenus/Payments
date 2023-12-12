@@ -1,5 +1,5 @@
 # Payments
-Servlet project for Epam
+Servlet project
 
 The customer registers in the system and has one or more Credit Cards, each of which corresponds to a specific Account in the system. The Client may make a Payment using the Account.
 The payment has one of two statuses: 'prepared' or 'sent'. (Optional: implement the ability to generate a pdf-report on payment).
