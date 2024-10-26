@@ -23,6 +23,7 @@ public class LogIn implements Command {
             request.getSession().setAttribute("error", "badLogin");
             return "view/login.jsp";
         } else {
+            request.getSession().setAttribute("error", "");
             request.getSession().setAttribute("user", user.get());
             return "redirect:/";
         }

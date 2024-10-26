@@ -79,6 +79,7 @@
       </c:when>
       <c:otherwise>
         <%--@elvariable id="paymentList" type="java.util.List"--%>
+<%--          ${paymentList.size()}--%>
         <c:forEach var="payment" items="${paymentList}"><%--@elvariable id="accountMap" type="Map<Integer, Account>"--%>
           <tr>
             <td >${payment.id}</td>

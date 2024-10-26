@@ -49,6 +49,7 @@ public class GetPayments implements Command {
                         pageNumber,
                         pageCommand,
                         sortType);
+        //System.out.println(paymentList.size());
         pageNumber = paymentService.getPage(currentUser.getId(),
                 pageNumber,
                 pageCommand);

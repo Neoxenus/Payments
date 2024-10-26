@@ -25,7 +25,7 @@
 <div class="container mt-4" style="width: 20em; border: 2px solid #999; border-radius: 5px">
   <form method="post" action="<c:url value="/"/>"  class="form-group">
 
-    <h4>Replenishment of account ${param.account}</h4>
+      <h4>Replenishment of account ${param.account}</h4>
     <input name="command" type="hidden" value="replenishAccount">
     <input name="accountId" type="hidden" value="${param.accountId}">
 
